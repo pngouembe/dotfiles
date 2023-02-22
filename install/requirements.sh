@@ -24,4 +24,4 @@ install_package_if_needed zsh
 install_package_if_needed exa 
 install_package_if_needed python3
 install_package_if_needed pip  python3-pip
-
+install_package_if_needed fzf 
