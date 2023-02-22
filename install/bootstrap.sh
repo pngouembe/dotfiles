@@ -144,7 +144,7 @@ create_env_file () {
         success 'created ~/.env.sh'
     fi
 }
-
+source $DOTFILES/install/downloads.sh
 install_dotfiles
 create_env_file
 

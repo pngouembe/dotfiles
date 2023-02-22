@@ -25,5 +25,3 @@ install_package_if_needed exa
 install_package_if_needed python3
 install_package_if_needed pip  python3-pip
 
-
-wget https://raw.githubusercontent.com/rupa/z/master/z.sh -O ~/.local/bin/z.sh
