@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sudo apt update
+sudo apt upgrade
 
 # Package manager installation
 sudo apt install -y \
@@ -58,3 +59,7 @@ curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0
 
 # Install z
 wget https://raw.githubusercontent.com/rupa/z/master/z.sh -O ~/.local/bin/z.sh
+
+# Install alacritty
+sudo add-apt-repository ppa:aslatter/ppa -y
+sudo apt install -y alacritty
