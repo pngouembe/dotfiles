@@ -51,3 +51,5 @@ bindkey '^?' backward-delete-char
 # END VIM MODE ----------------------------------------------------------------
 
 #eval "$(lua ~/bin/z.lua --init zsh)"
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
