@@ -2,5 +2,20 @@
     "editor.fontFamily": "FiraCode Nerd Font",
     "terminal.integrated.fontFamily": "FiraCode Nerd Font",
     "workbench.colorTheme": "Alt Catppuccin Macchiato",
-    "workbench.iconTheme": "catppuccin-macchiato"
+    "workbench.iconTheme": "catppuccin-macchiato",
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        },
+    },
+    "workbench.editor.revealIfOpen": true,
+    "editor.renderWhitespace": "all",
+    "editor.fontLigatures": true,
+    "editor.rulers": [
+        80,
+        100
+    ],
+    "editor.minimap.autohide": true
 }
