@@ -53,3 +53,5 @@ bindkey '^?' backward-delete-char
 #eval "$(lua ~/bin/z.lua --init zsh)"
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+fpath+=~/.zfunc
+autoload -Uz compinit && compinit
