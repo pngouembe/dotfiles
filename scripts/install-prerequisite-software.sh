@@ -31,7 +31,8 @@ cargo install \
     bat \
     exa \
     fd-find \
-    rg
+    rg \
+    bottom
 
 
 # Install starship
