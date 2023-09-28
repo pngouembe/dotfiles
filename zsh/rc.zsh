@@ -55,3 +55,8 @@ bindkey '^?' backward-delete-char
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 fpath+=~/.zfunc
 autoload -Uz compinit && compinit
+
+
+# Fix ctrl-r in tmux
+bindkey -v
+bindkey '^R' history-incremental-search-backward
