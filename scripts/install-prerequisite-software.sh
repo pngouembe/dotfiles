@@ -68,3 +68,6 @@ sudo apt install -y alacritty
 
 # Install zsh auto suggestion
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+
+# Install tmux package manager
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
