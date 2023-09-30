@@ -1,1 +1,2 @@
 $DOTFILES/nvim/chadrc.lua=$HOME/.config/nvim/lua/custom/chadrc.lua
+$DOTFILES/nvim/init.lua=$HOME/.config/nvim/lua/custom/init.lua
