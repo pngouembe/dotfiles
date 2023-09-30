@@ -55,9 +55,8 @@ make install
 export PATH="$HOME/neovim/bin:$PATH"
 cd -
 
-# Install lunarvim
-export LV_BRANCH='release-1.3/neovim-0.9' 
-curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh | bash -s -- -y
+# Install NvChad
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
 
 # Install z
 wget https://raw.githubusercontent.com/rupa/z/master/z.sh -O ~/.local/bin/z.sh

@@ -3,9 +3,9 @@ alias d=docker
 alias dc=docker-compose
 alias dkill="pgrep \"Docker\" | xargs kill -9"
 
-alias v='lvim -w ~/.vimlog "$@"'
-alias vi='lvim -w ~/.vimlog "$@"'
-alias vim='lvim -w ~/.vimlog "$@"'
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
 
 alias zn='vim $NOTES_DIR/$(date +"%Y%m%d%H%M.md")'
 
