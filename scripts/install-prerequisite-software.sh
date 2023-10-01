@@ -37,11 +37,8 @@ cargo binstall \
     exa \
     fd-find \
     ripgrep \
-    bottom
-
-
-# Install starship
-curl -sS https://starship.rs/install.sh | sh -s -- -y
+    bottom \
+    starship
 
 ## Install the nerd font to make starship display correctly
 mkdir -p $HOME/.local/share/fonts
