@@ -41,7 +41,7 @@
       "KC_B",
       "KC_BSPC",
       "LT(1,KC_SPC)",
-      "KC_LCTL",
+      "MT(MOD_LCTL,KC_ESC)",
       "KC_NO",
       "KC_NO",
       "KC_NO",
