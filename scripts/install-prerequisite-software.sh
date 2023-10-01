@@ -8,11 +8,13 @@ sudo apt install -y \
     curl \
     fzf \
     gettext \
+    git \
     ninja-build \
     pip \
     python3 \
     python3-pip \
     unzip \
+    software-properties-common \
     tmux \
     wget \
     zsh
