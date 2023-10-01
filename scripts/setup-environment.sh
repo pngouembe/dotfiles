@@ -2,7 +2,7 @@
 
 
 # Set zsh as default shell
-chsh -s $(which zsh)
+sudo chsh -s $(which zsh) $USER
 
 # Install alacritty themes
 mkdir -p ~/.config/alacritty/themes
