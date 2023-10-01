@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt update
-sudo apt upgrade
+sudo apt upgrade -y
 
 # Package manager installation
 sudo apt install -y \
@@ -26,12 +26,15 @@ pip install \
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 source "$HOME/.cargo/env"
 
+## Install cargo binstall prebuilt package 
+curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
 ## Install cargo packages
-cargo install \
+cargo binstall \
     bat \
     exa \
     fd-find \
-    rg \
+    ripgrep \
     bottom
 
 
