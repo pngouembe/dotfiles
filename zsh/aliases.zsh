@@ -40,7 +40,7 @@ alias grc='git rebase --continue'
 alias gra='git rebase --abort'
 alias gcan='gc --amend --no-edit'
 
-alias gp="git push -u 2>&1 | tee >(cat) | grep \"pull/new\" | awk '{print \$2}' | xargs open"
+alias gp="git push"
 alias gpf='git push --force-with-lease'
 
 alias gbdd='git-branch-utils -d'
