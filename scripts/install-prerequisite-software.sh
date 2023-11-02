@@ -34,10 +34,11 @@ curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-
 ## Install cargo packages
 cargo binstall \
     bat \
+    bottom \
+    du-dust \
     exa \
     fd-find \
     ripgrep \
-    bottom \
     starship
 
 ## Install the nerd font to make starship display correctly
