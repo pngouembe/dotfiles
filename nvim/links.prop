@@ -2,3 +2,5 @@ $DOTFILES/nvim/chadrc.lua=$HOME/.config/nvim/lua/custom/chadrc.lua
 $DOTFILES/nvim/init.lua=$HOME/.config/nvim/lua/custom/init.lua
 $DOTFILES/nvim/plugins.lua=$HOME/.config/nvim/lua/custom/plugins.lua
 $DOTFILES/nvim/configs/lspconfig.lua=$HOME/.config/nvim/lua/custom/configs/lspconfig.lua
+$DOTFILES/nvim/configs/null-ls.lua=$HOME/.config/nvim/lua/custom/configs/null-ls.lua
+$DOTFILES/nvim/mappings.lua=$HOME/.config/nvim/lua/custom/mappings.lua
