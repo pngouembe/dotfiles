@@ -60,3 +60,6 @@ autoload -Uz compinit && compinit
 # Fix ctrl-r in tmux
 bindkey -v
 bindkey '^R' history-incremental-search-backward
+
+# Fix tmux colors
+export TERM=xterm-256color
