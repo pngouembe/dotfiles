@@ -12,6 +12,7 @@ $git_metrics\
 $rust\
 $python\
 $c\
+$nodejs\
 $fill\
 $cmd_duration $jobs $time\
 $line_break\
