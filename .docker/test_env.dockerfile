@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu as scratch_env
 
 RUN apt update && apt install -y sudo
 
@@ -14,6 +14,15 @@ VOLUME ["/home/paul/dotfiles/"]
 
 WORKDIR /home/paul/dotfiles/
 
-ENTRYPOINT ./install.sh 
+# ENTRYPOINT ./install.sh
+
+CMD bash
+
+FROM scratch_env as bootstraped_env
+COPY --chown=paul bootstrap.sh /home/paul/
+
+RUN bash -c 'source /home/paul/bootstrap.sh'
+
+RUN rm /home/paul/bootstrap.sh
 
 CMD bash
