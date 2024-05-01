@@ -2,7 +2,7 @@
 
 set -e
 
-sudo apt update && sudo apt install -y curl build-essential
+sudo apt update && sudo apt install -y build-essential curl git wget unzip
 
 # Install cargo
 echo "Installing rust"
