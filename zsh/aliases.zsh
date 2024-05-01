@@ -1,17 +1,15 @@
 # ALIASES ---------------------------------------------------------------------
 alias d=docker
 alias dc=docker-compose
-alias dkill="pgrep \"Docker\" | xargs kill -9"
 
 alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 
-alias zn='vim $NOTES_DIR/$(date +"%Y%m%d%H%M.md")'
+alias l='eza -lah --group-directories-first --git --icons'
+alias ls='eza --icons'
+alias lst='eza --tree --level=2 --group-directories-first --git --icons'
 
-alias l='exa -lah'
-alias ls=exa
-alias sl=exa
 alias c='clear'
 alias s='source ~/.zshrc'
 
@@ -31,7 +29,6 @@ alias gu='git reset --soft HEAD~1'
 alias gpr='git remote prune origin'
 alias ff='gpr && git pull --ff-only'
 alias grd='git fetch origin && git rebase origin/master'
-alias gbb='git-switchbranch'
 alias gbf='git branch | head -1 | xargs' # top branch
 alias gl=pretty_git_log
 alias gla=pretty_git_log_all
@@ -43,67 +40,7 @@ alias gcan='gc --amend --no-edit'
 alias gp="git push"
 alias gpf='git push --force-with-lease'
 
-alias gbdd='git-branch-utils -d'
-alias gbuu='git-branch-utils -u'
-alias gbrr='git-branch-utils -r -b develop'
 alias gg='git branch | fzf | xargs git checkout'
 alias gup='git branch --set-upstream-to=origin/$(git-current-branch) $(git-current-branch)'
 
 # FUNCTIONS -------------------------------------------------------------------
-# function gg {
-#     git branch | grep "$1" | head -1 | xargs git checkout
-# }
-
-function take {
-    mkdir -p $1
-    cd $1
-}
-
-note() {
-    echo "date: $(date)" >> $HOME/drafts.txt
-    echo "$@" >> $HOME/drafts.txt
-    echo "" >> $HOME/drafts.txt
-}
-
-function unmount_all {
-    diskutil list |
-    grep external |
-    cut -d ' ' -f 1 |
-    while read file
-    do
-        diskutil unmountDisk "$file"
-    done
-}
-
-mff ()
-{
-    local curr_branch=`git-current-branch`
-    gco master
-    ff
-    gco $curr_branch
-}
-
-dclear () {
-    docker ps -a -q | xargs docker kill -f
-    docker ps -a -q | xargs docker rm -f
-    docker images | grep "api\|none" | awk '{print $3}' | xargs docker rmi -f
-    docker volume prune -f
-}
-
-alias docker-clear=dclear
-
-dreset () {
-    dclear
-    docker images -q | xargs docker rmi -f
-    docker volume rm $(docker volume ls |awk '{print $2}')
-    rm -rf ~/Library/Containers/com.docker.docker/Data/*
-    docker system prune -a
-}
-
-copy-line () {
-  rg --line-number "${1:-.}" | sk --delimiter ':' --preview 'bat --color=always --highlight-line {2} {1}' | awk -F ':' '{print $3}' | sed 's/^\s+//' | pbcopy
-}
-
-open-at-line () {
-  vim $(rg --line-number "${1:-.}" | sk --delimiter ':' --preview 'bat --color=always --highlight-line {2} {1}' | awk -F ':' '{print "+"$2" "$1}')
-}

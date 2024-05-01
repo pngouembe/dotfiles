@@ -2,33 +2,33 @@
 
 sudo apt update
 sudo apt upgrade -y
-
-# Package manager installation
+#
+# # Package manager installation
 sudo apt install -y \
-    curl \
-    fzf \
-    gettext \
-    git \
-    ninja-build \
-    pip \
-    python3 \
-    python3-pip \
-    unzip \
-    software-properties-common \
-    tmux \
-    wget \
-    zsh
-
-# Python package install
-pip install \
-    cmake \
-    rich
-
+    curl
+#     fzf \
+#     gettext \
+#     git \
+#     ninja-build \
+#     pip \
+#     python3 \
+#     python3-pip \
+#     unzip \
+#     software-properties-common \
+#     tmux \
+#     wget \
+#     zsh
+#
+# # Python package install
+# pip install \
+#     cmake \
+#     rich
+#
 # Install rust
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 source "$HOME/.cargo/env"
 
-## Install cargo binstall prebuilt package 
+## Install cargo binstall prebuilt package
 curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
 ## Install cargo packages
@@ -43,7 +43,7 @@ cargo binstall \
 
 ## Install the nerd font to make starship display correctly
 mkdir -p $HOME/.local/share/fonts
-wget -O $HOME/.local/share/fonts/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraCode.zip 
+wget -O $HOME/.local/share/fonts/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraCode.zip
 unzip -o -d $HOME/.local/share/fonts/ $HOME/.local/share/fonts/FiraCode.zip
 rm $HOME/.local/share/fonts/FiraCode.zip
 
