@@ -187,15 +187,25 @@ install-neovim: install-cmake install-gettext install-git
   make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=~/neovim" && \
   make install
 
+
+NVIM_CONFIG_DST := "~/.config/nvim/lua/"
+NVIM_CONFIG_SRC := join(justfile_directory(), "nvim")
 # Installs neovim configuration
 install-neovim-config:
   @echo "Installing neovim configuration"
   @just _backup-file ~/.config/nvim
+  @just _backup-file ~/.local/share/nvim 
   git clone https://github.com/NvChad/starter ~/.config/nvim
 
-  @just _backup-file ~/.config/nvim/lua/custom
-  @just _nvchad-custom-directory
-  for file in $(ls -A {{justfile_directory()}}/nvim/); do ln -s {{justfile_directory()}}/nvim/$file ~/.config/nvim/lua/custom/$file; done
+
+  @just _link-in-nvchad-config "chadrc.lua"
+  @just _link-in-nvchad-config "configs/lspconfig.lua"
+  @just _link-in-nvchad-config "plugins/init.lua"
+
+_link-in-nvchad-config path:
+  @echo "Linking {{join(NVIM_CONFIG_SRC,path)}} to {{join(NVIM_CONFIG_DST,path)}}"
+  rm -rf {{join(NVIM_CONFIG_DST, path)}} 
+  ln -s {{join(NVIM_CONFIG_SRC, path)}} {{join(NVIM_CONFIG_DST, path)}}
 
 _nvchad-custom-directory:
   @echo "Creating the nvchad custom directory"
