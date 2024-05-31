@@ -30,8 +30,8 @@ alias gpr='git remote prune origin'
 alias ff='gpr && git pull --ff-only'
 alias grd='git fetch origin && git rebase origin/master'
 alias gbf='git branch | head -1 | xargs' # top branch
-alias gl=pretty_git_log
-alias gla=pretty_git_log_all
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias gla=gl
 alias git-current-branch="git branch | grep \* | cut -d ' ' -f2"
 alias grc='git rebase --continue'
 alias gra='git rebase --abort'
