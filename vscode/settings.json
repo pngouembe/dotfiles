@@ -1,13 +1,13 @@
 {
     "editor.fontFamily": "FiraCode Nerd Font",
     "terminal.integrated.fontFamily": "FiraCode Nerd Font",
-    "workbench.colorTheme": "Alt Catppuccin Macchiato",
-    "workbench.iconTheme": "catppuccin-macchiato",
+    "workbench.colorTheme": "Catppuccin Frappé",
+    "workbench.iconTheme": "catppuccin-frappe",
     "editor.formatOnSave": true,
     "[python]": {
         "editor.defaultFormatter": "ms-python.python",
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.organizeImports": "explicit"
         },
     },
     "python.linting.flake8Args": [
@@ -25,5 +25,6 @@
     "cSpell.userWords": [
         "hostnames",
         "YOCTO"
-    ]
+    ],
+    "editor.inlayHints.enabled": "offUnlessPressed"
 }

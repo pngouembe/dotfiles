@@ -45,16 +45,14 @@ install-zsh:
   chsh -s $(which zsh)
 
 # Installs zsh configuration
-install-zsh-config: install-zsh install-oh-my-zsh install-starship install-just-completions install-zsh-autosuggestions
+install-zsh-config: install-zsh install-oh-my-zsh install-starship install-just-completions install-zsh-autosuggestions install-mirage
   @echo "Installing zsh configuration"
-  @just _backup-file ~/.zshrc
-  ln -s {{justfile_directory()}}/zsh/rc.zsh ~/.zshrc
+  mirage install --src {{justfile_directory()}}/zsh/rc.zsh --dst ~/.zshrc
 
 # Installs zsh aliases
 install-zsh-aliases: _zsh-directory
   @echo "Installing zsh aliases"
-  @just _backup-file ~/.zsh/aliases.zsh
-  ln -s {{justfile_directory()}}/zsh/aliases.zsh ~/.zsh/aliases.zsh
+  mirage install --src {{justfile_directory()}}/zsh/aliases.zsh --dst ~/.zsh/aliases.zsh
 
 # Installs oh-my-zsh
 install-oh-my-zsh:
@@ -97,7 +95,11 @@ _oh-my-zsh-plugins-directory: _oh-my-zsh-directory
 # =================CLI Tools=======================
 
 # Installs all my CLI tools
-install-cli-tools: install-bat install-bottom install-dust install-eza install-fd install-fzf install-fzf-git install-ripgrep install-starship install-tlrc install-zoxide
+install-cli-tools: install-mirage install-bat install-bottom install-dust install-eza install-fd install-fzf install-fzf-git install-ripgrep install-starship install-tlrc install-zoxide
+
+install-mirage:
+  @echo "Installing mirage"
+  cargo install --git https://github.com/pngouembe/mirage.git
 
 # Installs bat
 install-bat: install-wget
@@ -146,13 +148,12 @@ install-ripgrep:
   cargo binstall -y ripgrep
 
 # Installs starship command prompt
-install-starship: _config-directory install-nerd-fonts
+install-starship: _config-directory install-nerd-fonts install-mirage
   @echo "Installing starship"
   cargo binstall -y starship
 
   @echo "Installing starship configuration"
-  @just _backup-file ~/.config/starship.toml
-  ln -s {{justfile_directory()}}/starship/starship.toml ~/.config/starship.toml
+  mirage install --src {{justfile_directory()}}/starship/starship.toml --dst ~/.config/starship.toml
 
 # Installs tlrc
 install-tlrc:
@@ -194,7 +195,7 @@ NVIM_CONFIG_SRC := join(justfile_directory(), "nvim")
 install-neovim-config:
   @echo "Installing neovim configuration"
   @just _backup-file ~/.config/nvim
-  @just _backup-file ~/.local/share/nvim 
+  @just _backup-file ~/.local/share/nvim
   git clone https://github.com/NvChad/starter ~/.config/nvim
 
 
@@ -204,7 +205,7 @@ install-neovim-config:
 
 _link-in-nvchad-config path:
   @echo "Linking {{join(NVIM_CONFIG_SRC,path)}} to {{join(NVIM_CONFIG_DST,path)}}"
-  rm -rf {{join(NVIM_CONFIG_DST, path)}} 
+  rm -rf {{join(NVIM_CONFIG_DST, path)}}
   ln -s {{join(NVIM_CONFIG_SRC, path)}} {{join(NVIM_CONFIG_DST, path)}}
 
 _nvchad-custom-directory:
@@ -227,13 +228,11 @@ install-git:
   sudo apt install -qq -y git
 
 # Installs zellij
-install-zellij:
+install-zellij: install-mirage
   @echo "Installing zellij"
   cargo binstall -y zellij
 
-  @just _backup-file ~/.config/zellij
-  @just _zellij-directory
-  ln -s {{justfile_directory()}}/zellij/config.kdl ~/.config/zellij/config.kdl
+  mirage install --src {{justfile_directory()}}/zellij/config.kdl --dst ~/.config/zellij/config.kdl
 
 
 _zellij-directory:
