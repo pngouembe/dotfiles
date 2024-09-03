@@ -2,6 +2,9 @@
 {
     home.username = "png";
     home.homeDirectory = "/home/png";
+    services.gnome-keyring = {
+      enable = true;
+    };
 
     programs.bat = {
       enable = true;
@@ -158,13 +161,18 @@
         gcc_multi
         git
         just
+        pipewire
+        polkit
         ripgrep
         rustup
         steam
+        swaynotificationcenter
         tlrc
         unzip
         vscodium
+        waybar
         wget
+        xdg-desktop-portal-hyprland
         zellij
     ];
 
