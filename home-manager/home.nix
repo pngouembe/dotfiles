@@ -33,6 +33,8 @@
         fileWidgetOptions = ["--preview 'bat --color=always --style=header,grid --line-range :500 {}"];
     };
 
+    programs.kitty.enable = true;
+
     programs.neovim = {
         enable = true;
         viAlias = true;
