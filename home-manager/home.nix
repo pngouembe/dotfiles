@@ -2,9 +2,9 @@
 {
     home.username = "png";
     home.homeDirectory = "/home/png";
-    services.gnome-keyring = {
-      enable = true;
-    };
+    # services.gnome-keyring = {
+    #   enable = true;
+    # };
 
     programs.bat = {
       enable = true;
