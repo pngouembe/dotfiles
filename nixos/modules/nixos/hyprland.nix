@@ -6,7 +6,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    # hyprpaper
+    hyprpaper
     kitty
     libnotify
     mako
