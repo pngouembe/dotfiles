@@ -8,6 +8,7 @@
     ./neovim
     ./starship
     ./waybar
+    ./yazi
     ./zoxide
     ./zsh
   ];
