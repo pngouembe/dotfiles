@@ -9,20 +9,6 @@
 
   gtk = {
     enable = true;
-    theme = {
-      name = "Catppuccin-Mocha-Standard-Pink-Dark";
-      package = pkgs.catppuccin-gtk.override {
-        accents = ["pink"];
-        variant = "mocha";
-      };
-    };
-    iconTheme = {
-      package = pkgs.catppuccin-papirus-folders.override {
-        flavor = "mocha";
-        accent = "pink";
-      };
-      name = "Papirus-Dark";
-    };
     font = {
       name = "FiraCode Nerd Font";
       size = 10;
@@ -42,5 +28,5 @@
   };
 
   # cursor theme
-  home.file.".icons/default".source = "${pkgs.catppuccin-cursors.mochaPink}/share/icons/Catppuccin-Mocha-Pink-Cursors";
+  # home.file.".icons/default".source = "${pkgs.catppuccin-cursors.mochaPink}/share/icons/Catppuccin-Mocha-Pink-Cursors";
 }

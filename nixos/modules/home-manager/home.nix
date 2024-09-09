@@ -1,6 +1,7 @@
 {
   imports = [
     ./bat
+    ./catppuccin
     ./fzf
     ./gtk
     ./hyprland
