@@ -98,16 +98,6 @@
     shell = pkgs.zsh;
   };
 
-  home-manager = {
-    extraSpecialArgs = {
-      inherit inputs;
-      inherit pkgs-unstable;
-    };
-    users = {
-      "png" = import ./home.nix;
-    };
-  };
-
   # Install firefox.
   programs.firefox.enable = true;
 

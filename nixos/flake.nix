@@ -36,6 +36,11 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit pkgs-unstable;
+            };
+
 
             home-manager.users.png = {
               imports = [
