@@ -148,6 +148,29 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  # Fonts
+  fonts = {
+    packages = with pkgs; [
+      twemoji-color-font
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      (nerdfonts.override {fonts = ["FantasqueSansMono"];})
+    ];
+
+    fontconfig = {
+      defaultFonts = {
+        monospace = [
+          "FantasqueSansMono Nerd Font"
+          "Noto Color Emoji"
+        ];
+        sansSerif = ["Noto Sans" "Noto Color Emoji"];
+        serif = ["Noto Serif" "Noto Color Emoji"];
+        emoji = ["Noto Color Emoji"];
+      };
+    };
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

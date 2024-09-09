@@ -3,8 +3,6 @@
   home.username = "png";
   home.homeDirectory = "/home/png";
 
-
-
   nixpkgs.config.allowUnfree = true;
 
   home.packages = [
@@ -18,7 +16,7 @@
     pkgs.eza
     pkgs.fd
     pkgs.fira-code-nerdfont
-    pkgs.fzf
+    pkgs.fontconfig
     pkgs.gcc_multi
     pkgs.git
     pkgs.just
