@@ -2,7 +2,7 @@
   imports = [
     ./bat
     ./fzf
-    # ./hyprland
+    ./hyprland
     ./kitty
     ./neovim
     ./starship
