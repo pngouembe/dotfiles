@@ -33,9 +33,9 @@
       "vi" = "nvim";
       "vim" = "nvim";
 
-      "l" = "eza -lah --group-directories-first --git --icons";
-      "ls" = "eza --icons";
-      "lst" = "eza --tree --level=2 --group-directories-first --git --icons";
+      "l" = "eza -lah --group-directories-first --git --icons=auto";
+      "ls" = "eza --icons=auto";
+      "lst" = "eza --tree --level=2 --group-directories-first --git --icons=auto";
 
       "c" = "clear";
       "s" = "source ~/.zshrc";

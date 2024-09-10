@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   wayland.windowManager.hyprland.settings = {
     exec-once = with pkgs; [
@@ -8,7 +8,8 @@
     ];
   };
 
-  xdg.configFile."hypr" = {
+  home.file."${config.xdg.configHome}/hypr" = {
     source = ./config;
+    recursive = true;
   };
 }
