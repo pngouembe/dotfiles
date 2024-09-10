@@ -23,6 +23,7 @@
           *)              fzf --preview "--preview 'bat -n --color=always --style=header,grid --line-range :500 {}" "$@" ;;
         esac
       }
+      export PATH="$PATH:$HOME/.cargo/bin"
     '';
 
     shellAliases = {

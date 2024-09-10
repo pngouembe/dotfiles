@@ -1,4 +1,4 @@
-{  ... }:
+{ config, ... }:
 {
   programs.waybar = {
     enable = true;
@@ -57,7 +57,5 @@
     style = builtins.readFile ./config/style.css;
   };
 
-  xdg.configFile."waybar/mocha.css".text =
-    builtins.readFile ./config/mocha.css;
-
+  home.file."${config.xdg.configHome}/waybar/mocha.css".source = ./config/mocha.css;
 }
