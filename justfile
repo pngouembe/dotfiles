@@ -34,21 +34,26 @@ _config-directory:
 # =================ZSH=======================
 
 # Installs my complete zsh setup
-install-my-zsh: install-zsh install-zsh-config install-zsh-aliases
+install-my-zsh: install-zsh install-zsh-config install-zsh-aliases install-zsh-arch-linux-config
 
 # Installs zsh and sets it as the default shell
 install-zsh:
   @echo "Installing zsh"
-  sudo apt install -qq -y zsh
+  # sudo apt install -qq -y zsh
 
   @echo "Setting zsh as the default shell"
   chsh -s $(which zsh)
 
 # Installs zsh configuration
-install-zsh-config: install-zsh install-oh-my-zsh install-starship install-just-completions install-zsh-autosuggestions
+install-zsh-config: install-zsh install-oh-my-zsh install-starship install-just-completions install-zsh-autosuggestions install-zsh-syntax-highlighting install-zsh-256color
   @echo "Installing zsh configuration"
   @just _backup-file ~/.zshrc
   ln -s {{justfile_directory()}}/zsh/rc.zsh ~/.zshrc
+
+# Installs zsh config for arch linux
+install-zsh-arch-linux-config: _zsh-directory
+  @just _backup-file ~/.zsh/arch-linux.zsh
+  ln -s {{justfile_directory()}}/zsh/arch-linux.zsh ~/.zsh/arch-linux.zsh
 
 # Installs zsh aliases
 install-zsh-aliases: _zsh-directory
@@ -68,10 +73,22 @@ install-just-completions: _oh-my-zsh-completion-directory
   just --completions zsh > ~/.oh-my-zsh/completions/_just
 
 # Installs zsh autosuggestions
-install-zsh-autosuggestions: _oh-my-zsh-plugins-directory install-git
+install-zsh-autosuggestions: _oh-my-zsh-plugins-directory
   @echo "Installing zsh autosuggestions"
   @just _backup-file ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+# Installs zsh syntax highlighting
+install-zsh-syntax-highlighting: _oh-my-zsh-plugins-directory
+  @echo "Installing zsh syntax highlighting"
+  @just _backup-file ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+# Installs zsh 256 color
+install-zsh-256color: _oh-my-zsh-plugins-directory
+  @echo "Installing zsh 256 color"
+  @just _backup-file ~/.oh-my-zsh/custom/plugins/zsh-256color
+  git clone https://github.com/chrissicool/zsh-256color ~/.oh-my-zsh/custom/plugins/zsh-256color
 
 # Creates the .zsh directory
 _zsh-directory:
@@ -162,7 +179,7 @@ install-tlrc:
 # Installs wget
 install-wget:
   @echo "Installing wget"
-  sudo apt install -qq -y wget
+  # sudo apt install -qq -y wget
 
 # Installs zoxide
 install-zoxide: install-fzf
@@ -214,17 +231,17 @@ _nvchad-custom-directory:
 # Installs cmake
 install-cmake:
   @echo "Installing cmake"
-  sudo apt install -qq -y cmake
+  # sudo apt install -qq -y cmake
 
 # Installs gettext
 install-gettext:
   @echo "Installing gettext"
-  sudo apt install -qq -y gettext
+  # sudo apt install -qq -y gettext
 
 # Installs git
 install-git:
   @echo "Installing git"
-  sudo apt install -qq -y git
+  # sudo apt install -qq -y git
 
 # Installs zellij
 install-zellij:

@@ -10,7 +10,10 @@ plugins=(
     docker
     docker-compose
     git
+    sudo
+    zsh-256color
     zsh-autosuggestions
+    zsh-syntax-highlighting
 )
 source_if_exists $ZSH/oh-my-zsh.sh
 autoload compinit
@@ -77,3 +80,8 @@ export PATH="$PATH:/usr/local/sbin:$HOME/.local/bin:$HOME/neovim/bin"
 
 # Fix tmux colors
 export TERM=xterm-256color
+
+# Arch linux additions
+if test -f /etc/arch-release ; then
+    source "$HOME/.zsh/arch-linux.zsh"
+fi
