@@ -6,9 +6,9 @@ alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 
-alias l='eza -lah --group-directories-first --git --icons'
-alias ls='eza --icons'
-alias lst='eza --tree --level=2 --group-directories-first --git --icons'
+alias l='eza -lah --group-directories-first --git --icons=auto'
+alias ls='eza --icons=auto'
+alias lst='eza --tree --level=2 --group-directories-first --git --icons=auto'
 
 alias c='clear'
 alias s='source ~/.zshrc'
