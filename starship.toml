@@ -4,6 +4,7 @@
 format = """
 $username\
 $hostname\
+$container\
 $directory\
 $git_branch\
 $git_state\
@@ -24,6 +25,11 @@ format = "[$symbol($version )]($style)"
 
 [fill]
 symbol = " "
+
+[container]
+symbol = " "
+format = '[$symbol\[$name\]]($style) '
+style = "red bold dimmed"
 
 [directory]
 style = "blue"

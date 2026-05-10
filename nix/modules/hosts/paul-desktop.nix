@@ -14,7 +14,7 @@
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = { inherit inputs; };
-        home-manager.users.png = import ../nixosModules/home/_home.nix;
+        home-manager.users.png = import ../home/_home.nix;
       }
     ];
   };
