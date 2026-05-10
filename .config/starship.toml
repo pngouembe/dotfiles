@@ -9,6 +9,7 @@ $git_branch\
 $git_state\
 $git_status\
 $git_metrics\
+$nix_shell\
 $rust\
 $python\
 $c\
@@ -63,6 +64,11 @@ style = "yellow"
 
 [memory_usage]
 symbol = " "
+
+[nix_shell]
+symbol = " "
+format = '[$symbol$state( \($name\))]($style) '
+style = "bold blue"
 
 [rust]
 symbol = " "
