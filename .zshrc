@@ -18,6 +18,8 @@ compinit -i
 
 # Installing zsh aliases
 source_if_exists $HOME/.zsh/aliases.zsh
+source_if_exists $HOME/.zsh/git.zsh
+source_if_exists $HOME/.zsh/history.zsh
 
 # Setup bat
 export BAT_THEME="Catppuccin Mocha"
@@ -70,6 +72,12 @@ eval "$(starship init zsh)"
 
 # Initialise zoxide
 eval "$(zoxide init --cmd cd zsh)"
+
+# Re-enter zsh inside `nix-shell` / `nix develop` so this rc is loaded there too.
+# Only available on Nix-based systems.
+if command -v nix-your-shell >/dev/null 2>&1; then
+    eval "$(nix-your-shell zsh)"
+fi
 
 export VISUAL=nvim
 export EDITOR=nvim

@@ -8,15 +8,22 @@ alias a := install-all
 alias all := install-all
 
 # Installs the complete setup
-install-all: install-my-zsh install-cli-tools install-dev-tools
+install-all: install-dotfiles install-my-zsh install-cli-tools install-dev-tools
 
+
+# =================Dotfiles=======================
+
+# Symlinks every config file under $HOME using GNU stow
+install-dotfiles: install-stow
+  @echo "Linking dotfiles into \$HOME"
+  cd {{justfile_directory()}} && stow .
+
+# Installs GNU stow
+install-stow:
+  @echo "Installing stow"
+  sudo apt install -qq -y stow
 
 # =================Utils=======================
-
-# Backs up a file (renames it with the .bak extention)
-_backup-file file_path:
-  @rm -rf {{file_path}}.bak
-  @if {{path_exists(file_path)}}; then echo "Backing up {{file_path}}"; mv {{file_path}} {{file_path}}.bak; fi
 
 # Creates the .config directory
 _config-directory:
@@ -34,7 +41,7 @@ _config-directory:
 # =================ZSH=======================
 
 # Installs my complete zsh setup
-install-my-zsh: install-zsh install-zsh-config install-zsh-aliases
+install-my-zsh: install-zsh install-oh-my-zsh install-just-completions install-zsh-autosuggestions install-starship
 
 # Installs zsh and sets it as the default shell
 install-zsh:
@@ -44,22 +51,9 @@ install-zsh:
   @echo "Setting zsh as the default shell"
   chsh -s $(which zsh)
 
-# Installs zsh configuration
-install-zsh-config: install-zsh install-oh-my-zsh install-starship install-just-completions install-zsh-autosuggestions
-  @echo "Installing zsh configuration"
-  @just _backup-file ~/.zshrc
-  ln -s {{justfile_directory()}}/zsh/rc.zsh ~/.zshrc
-
-# Installs zsh aliases
-install-zsh-aliases: _zsh-directory
-  @echo "Installing zsh aliases"
-  @just _backup-file ~/.zsh/aliases.zsh
-  ln -s {{justfile_directory()}}/zsh/aliases.zsh ~/.zsh/aliases.zsh
-
 # Installs oh-my-zsh
 install-oh-my-zsh:
   @echo "Installing oh-my-zsh"
-  @just _backup-file ~/.oh-my-zsh
   curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh -s -- --skip-chsh --keep-zshrc
 
 # Installs the just completions
@@ -70,13 +64,7 @@ install-just-completions: _oh-my-zsh-completion-directory
 # Installs zsh autosuggestions
 install-zsh-autosuggestions: _oh-my-zsh-plugins-directory install-git
   @echo "Installing zsh autosuggestions"
-  @just _backup-file ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-
-# Creates the .zsh directory
-_zsh-directory:
-  @echo "Creating the .zsh directory"
-  @mkdir -p ~/.zsh
 
 # Creates the .oh-my-zsh directory
 _oh-my-zsh-directory:
@@ -131,13 +119,11 @@ install-fd:
 # Installs fzf
 install-fzf: install-git
   @echo "Installing fzf"
-  @just _backup-file ~/.fzf
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --no-bash --no-fish --no-update-rc --key-bindings --completion
 
 install-fzf-git: install-git
-  @echo "Installing fzf"
-  @just _backup-file ~/.fzf-git
+  @echo "Installing fzf-git"
   git clone --depth 1 https://github.com/junegunn/fzf-git.sh.git ~/.fzf-git
 
 # Installs ripgrep
@@ -146,13 +132,9 @@ install-ripgrep:
   cargo binstall -y ripgrep
 
 # Installs starship command prompt
-install-starship: _config-directory install-nerd-fonts
+install-starship: install-nerd-fonts
   @echo "Installing starship"
   cargo binstall -y starship
-
-  @echo "Installing starship configuration"
-  @just _backup-file ~/.config/starship.toml
-  ln -s {{justfile_directory()}}/starship/starship.toml ~/.config/starship.toml
 
 # Installs tlrc
 install-tlrc:
@@ -172,44 +154,16 @@ install-zoxide: install-fzf
 # =================Dev Tools=======================
 
 # Installs all my dev tools
-install-dev-tools: install-my-neovim install-zellij
+install-dev-tools: install-neovim install-zellij
 
-# Installs my neovim setup
-install-my-neovim: install-neovim install-neovim-config
-
-# Installs neovim
+# Installs neovim (LazyVim is bootstrapped by ~/.config/nvim/init.lua on first launch)
 install-neovim: install-cmake install-gettext install-git
   @echo "Installing neovim"
-  @just _backup-file ~/neovim
   git clone https://github.com/neovim/neovim ~/neovim
   cd ~/neovim && \
   git checkout stable && \
   make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=~/neovim" && \
   make install
-
-
-NVIM_CONFIG_DST := "~/.config/nvim/lua/"
-NVIM_CONFIG_SRC := join(justfile_directory(), "nvim")
-# Installs neovim configuration
-install-neovim-config:
-  @echo "Installing neovim configuration"
-  @just _backup-file ~/.config/nvim
-  @just _backup-file ~/.local/share/nvim 
-  git clone https://github.com/NvChad/starter ~/.config/nvim
-
-
-  @just _link-in-nvchad-config "chadrc.lua"
-  @just _link-in-nvchad-config "configs/lspconfig.lua"
-  @just _link-in-nvchad-config "plugins/init.lua"
-
-_link-in-nvchad-config path:
-  @echo "Linking {{join(NVIM_CONFIG_SRC,path)}} to {{join(NVIM_CONFIG_DST,path)}}"
-  rm -rf {{join(NVIM_CONFIG_DST, path)}} 
-  ln -s {{join(NVIM_CONFIG_SRC, path)}} {{join(NVIM_CONFIG_DST, path)}}
-
-_nvchad-custom-directory:
-  @echo "Creating the nvchad custom directory"
-  @mkdir -p ~/.config/nvim/lua/custom
 
 # Installs cmake
 install-cmake:
@@ -230,12 +184,3 @@ install-git:
 install-zellij:
   @echo "Installing zellij"
   cargo binstall -y zellij
-
-  @just _backup-file ~/.config/zellij
-  @just _zellij-directory
-  ln -s {{justfile_directory()}}/zellij/config.kdl ~/.config/zellij/config.kdl
-
-
-_zellij-directory:
-  @echo "Creating the zellij config directory"
-  @mkdir -p ~/.config/zellij

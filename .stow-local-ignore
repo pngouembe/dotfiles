@@ -1,0 +1,26 @@
+# Stow ignore file — patterns are Perl regex, anchored.
+# Patterns without `/` match basenames at any depth.
+# Patterns with `/` match paths relative to the package root.
+
+# VCS / metadata
+\.git
+\.gitmodules
+\.gitignore
+
+# Stow's own files
+\.stowrc
+\.stow-local-ignore
+
+# Repo docs / scripts / install plumbing (not config)
+^/README\.md
+^/justfile
+^/justfile\.bak
+^/install\.sh\.bak
+^/bootstrap\.sh
+^/scripts
+^/keyboard_layout
+^/\.docker
+
+# Editor leftovers
+.+\.swp$
+.+\.bak$
