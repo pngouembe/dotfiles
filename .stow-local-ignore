@@ -13,10 +13,7 @@
 
 # Repo docs / scripts / install plumbing (not config)
 ^/README\.md
-^/CLAUDE\.md
 ^/justfile
-^/justfile\.bak
-^/install\.sh\.bak
 ^/bootstrap\.sh
 ^/scripts
 ^/keyboard_layout
@@ -29,7 +26,6 @@
 # Nix flake / modules (system config, not stowed)
 ^/flake\.nix
 ^/flake\.lock
-^/dotfiles\.json
 ^/modules
 
 # Editor leftovers
