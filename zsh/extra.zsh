@@ -5,9 +5,9 @@ source_if_exists () {
 }
 
 # Local zsh config split into focused files
-source_if_exists $HOME/.zsh/aliases.zsh
-source_if_exists $HOME/.zsh/git.zsh
-source_if_exists $HOME/.zsh/history.zsh
+source_if_exists $HOME/.config/zsh/aliases.zsh
+source_if_exists $HOME/.config/zsh/git.zsh
+source_if_exists $HOME/.config/zsh/history.zsh
 
 # Setup bat
 export BAT_THEME="Catppuccin Mocha"

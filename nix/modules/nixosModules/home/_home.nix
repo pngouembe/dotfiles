@@ -24,8 +24,8 @@
     };
 
     initContent = ''
-      if [[ -r "$HOME/.zsh/extra.zsh" ]]; then
-        source "$HOME/.zsh/extra.zsh"
+      if [[ -r "$HOME/.config/zsh/extra.zsh" ]]; then
+        source "$HOME/.config/zsh/extra.zsh"
       fi
     '';
   };
