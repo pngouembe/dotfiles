@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+#
+# dotfiles — link in-repo dotfiles into $HOME (or unlink/inspect them).
+#
+# Same script works on NixOS and on machines without Nix:
+#   - Nix-managed entries in this repo are bundled into the nix store by
+#     `home.file`. After `nixos-rebuild switch`, ~/.config/<x> is a symlink
+#     into /nix/store/...  Running `dotfiles link` swaps those for symlinks
+#     pointing at the in-repo source files, so edits take effect immediately.
+#     The next `nixos-rebuild switch` restores the nix-store links.
+#   - On a non-Nix machine, clone the repo and run `./scripts/dotfiles link` —
+#     this becomes the install command (no rebuild step needed).
+#
+# Registry: <repo>/dotfiles.json — list of { target, source } pairs, where
+# `target` is relative to $HOME (or $DOTFILES_TARGET) and `source` is relative
+# to the repo root.
+#
+# Env:
+#   DOTFILES_REPO    Path to the nix-flakes checkout. Defaults to the parent
+#                    directory of this script's location, which works when
+#                    invoked as ./scripts/dotfiles. The Nix wrapper sets this
+#                    to the user's expected checkout path.
+#   DOTFILES_TARGET  Where symlinks are created. Defaults to $HOME.
+
+set -euo pipefail
+
+script_path="$(readlink -f "$0")"
+default_repo="$(cd "$(dirname "$script_path")/.." && pwd)"
+
+REPO="${DOTFILES_REPO:-$default_repo}"
+TARGET="${DOTFILES_TARGET:-$HOME}"
+REGISTRY="$REPO/dotfiles.json"
+
+die() { echo "dotfiles: $*" >&2; exit 1; }
+
+[[ -f "$REGISTRY" ]] || die "registry not found: $REGISTRY"
+command -v jq >/dev/null || die "jq is required (apt/brew/pacman install jq)"
+
+read_registry() {
+  jq -r '.[] | [.target, .source] | @tsv' "$REGISTRY"
+}
+
+cmd_link() {
+  while IFS=$'\t' read -r target source; do
+    tgt="$TARGET/$target"
+    src="$REPO/$source"
+    if [[ ! -f "$src" ]]; then
+      echo "  skip  $target (missing source: $src)"
+      continue
+    fi
+    mkdir -p "$(dirname "$tgt")"
+    if [[ -L "$tgt" ]]; then
+      rm -f "$tgt"
+    elif [[ -e "$tgt" ]]; then
+      mv -f "$tgt" "$tgt.bak"
+      echo "  back  $target -> $target.bak"
+    fi
+    ln -s "$src" "$tgt"
+    echo "  link  $target -> $src"
+  done < <(read_registry)
+}
+
+cmd_unlink() {
+  while IFS=$'\t' read -r target _source; do
+    tgt="$TARGET/$target"
+    if [[ -L "$tgt" ]]; then
+      rm -f "$tgt"
+      echo "  rm    $target"
+    fi
+  done < <(read_registry)
+}
+
+cmd_status() {
+  while IFS=$'\t' read -r target source; do
+    tgt="$TARGET/$target"
+    src="$REPO/$source"
+    if [[ -L "$tgt" ]]; then
+      actual="$(readlink "$tgt")"
+      if [[ "$actual" == "$src" ]]; then
+        printf '  %-6s %s\n' "dev"   "$target"
+      elif [[ "$actual" == /nix/store/* ]]; then
+        printf '  %-6s %s\n' "nix"   "$target"
+      else
+        printf '  %-6s %s -> %s\n' "other" "$target" "$actual"
+      fi
+    elif [[ -e "$tgt" ]]; then
+      printf '  %-6s %s (regular file)\n' "file" "$target"
+    else
+      printf '  %-6s %s\n' "absent" "$target"
+    fi
+  done < <(read_registry)
+}
+
+usage() {
+  cat <<EOF
+Usage: dotfiles {link|unlink|status}
+
+  link     Symlink each registry entry into \$DOTFILES_TARGET (default \$HOME).
+           Replaces existing symlinks; backs up regular files to <name>.bak.
+  unlink   Remove symlinks created by this tool. Leaves backups in place.
+  status   Show whether each managed file is dev / nix / file / absent.
+
+Env:
+  DOTFILES_REPO=$REPO
+  DOTFILES_TARGET=$TARGET
+EOF
+}
+
+case "${1:-}" in
+  link)   cmd_link   ;;
+  unlink) cmd_unlink ;;
+  status) cmd_status ;;
+  ""|-h|--help) usage ;;
+  *)      usage; exit 1 ;;
+esac

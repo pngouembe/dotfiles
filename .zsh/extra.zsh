@@ -4,19 +4,7 @@ source_if_exists () {
     fi
 }
 
-# Setting up oh-my-zsh
-export ZSH="$HOME/.oh-my-zsh"
-plugins=(
-    docker
-    docker-compose
-    git
-    zsh-autosuggestions
-)
-source_if_exists $ZSH/oh-my-zsh.sh
-autoload compinit
-compinit -i
-
-# Installing zsh aliases
+# Local zsh config split into focused files
 source_if_exists $HOME/.zsh/aliases.zsh
 source_if_exists $HOME/.zsh/git.zsh
 source_if_exists $HOME/.zsh/history.zsh
