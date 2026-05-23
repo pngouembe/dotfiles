@@ -14,8 +14,9 @@
       services.desktopManager.gnome.enable = true;
 
       services.xserver.xkb = {
-        layout = "us";
-        variant = "";
+        layout = "us,us";
+        variant = ",intl";
+        options = "grp:alt_shift_toggle";
       };
 
       services.printing.enable = true;
