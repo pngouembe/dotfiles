@@ -13,6 +13,7 @@
       nixd
       zed-editor
       gcc
+      nodejs
       claude-code
       lmstudio
     ];
