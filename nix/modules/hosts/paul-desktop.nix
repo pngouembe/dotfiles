@@ -9,6 +9,7 @@
       config.flake.nixosModules.desktop
       config.flake.nixosModules.gaming
       config.flake.nixosModules.development
+      config.flake.nixosModules.media
       inputs.home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
