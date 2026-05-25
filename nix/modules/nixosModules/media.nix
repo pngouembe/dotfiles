@@ -1,6 +1,6 @@
 { ... }:
 {
   flake.nixosModules.media = { pkgs, ... }: {
-    environment.systemPackages = [ pkgs.rawtherapee ];
+    environment.systemPackages = [ pkgs.rapidraw ];
   };
 }
