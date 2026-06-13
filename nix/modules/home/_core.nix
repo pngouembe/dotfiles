@@ -15,7 +15,11 @@
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "docker" "docker-compose" ];
+      plugins = [
+        "git"
+        "docker"
+        "docker-compose"
+      ];
     };
 
     initContent = ''
@@ -50,6 +54,7 @@
     stow
     tlrc
     just
+    yazi
 
     # Editors / dev
     neovim
