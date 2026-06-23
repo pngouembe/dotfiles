@@ -7,7 +7,6 @@
     let
       hyprlandPkg = inputs.hyprland.packages.${system}.hyprland;
       noctaliaPkg = inputs.noctalia.packages.${system}.default;
-      quickshellPkg = inputs.noctalia.inputs.noctalia-qs.packages.${system}.quickshell;
 
       hyprlandWrapped = inputs.wrappers.wrapperModules.hyprland.apply (
         { lib, ... }: {
@@ -26,7 +25,6 @@
 
           extraPackages = [
             noctaliaPkg
-            quickshellPkg
             pkgs.hyprpolkitagent
           ];
         }
