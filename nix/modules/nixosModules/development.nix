@@ -18,11 +18,14 @@
         nixd
         zed-editor
         gcc
+        cmake
+        curl.dev
         nodejs
         claude-code
         lmstudio
         android-studio
         uv
+        python3
       ];
     };
 }
