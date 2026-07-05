@@ -43,6 +43,7 @@
     # Notes & sync
     obsidian
     syncthing
+    spotify
 
     # Fonts
     nerd-fonts.fira-code
