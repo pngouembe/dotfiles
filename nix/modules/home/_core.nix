@@ -42,6 +42,7 @@
         source "$HOME/.config/zsh/extra.zsh"
       fi
     '';
+
   };
 
   home.packages = with pkgs; [
@@ -70,6 +71,7 @@
     tlrc
     just
     yazi
+    unzip
 
     # Editors / dev
     neovim
