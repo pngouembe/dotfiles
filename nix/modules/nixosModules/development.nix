@@ -20,6 +20,7 @@
         gcc
         cmake
         curl.dev
+        gnumake
         nodejs
         claude-code
         lmstudio
