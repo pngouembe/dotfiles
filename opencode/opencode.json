@@ -9,6 +9,6 @@
         "baseURL": "http://localhost:1234/v1"
       }
     }
-  }
-  // "plugin": ["superpowers@git+https://github.com/obra/superpowers.git"]
+  },
+  "lsp": true
 }
