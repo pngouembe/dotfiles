@@ -67,6 +67,13 @@ telemetry_enabled = false
     launcher_session_search = true
     launcher_sort_by_usage = true
 
+    [shell.screenshot]
+    copy_to_clipboard = true
+    save_to_file = true
+    freeze_screen = true
+    pipe_to_command = true
+    pipe_command = "satty -f -"
+
 [theme]
 builtin = "Catppuccin"
 mode = "dark"

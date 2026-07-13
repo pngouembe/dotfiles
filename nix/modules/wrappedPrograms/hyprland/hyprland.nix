@@ -26,6 +26,7 @@
           extraPackages = [
             noctaliaPkg
             pkgs.hyprpolkitagent
+            pkgs.satty # screenshot annotation editor piped from noctalia
           ];
         }
       );
