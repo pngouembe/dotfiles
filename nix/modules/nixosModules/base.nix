@@ -53,6 +53,15 @@
       "flakes"
     ];
 
+    security.pam.loginLimits = [
+      {
+        domain = "*";
+        type = "-";
+        item = "memlock";
+        value = "unlimited";
+      }
+    ];
+
     virtualisation.podman.enable = true;
 
     system.stateVersion = "25.11";
