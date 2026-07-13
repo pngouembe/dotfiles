@@ -81,5 +81,8 @@
     # Docker
     docker
     lazydocker
+    # Containers
+    podman
+    toolbox
   ];
 }

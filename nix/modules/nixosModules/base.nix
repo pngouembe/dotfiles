@@ -41,6 +41,7 @@
       shell = pkgs.zsh;
       extraGroups = [
         "networkmanager"
+        "podman"
         "wheel"
       ];
     };
@@ -51,6 +52,8 @@
       "nix-command"
       "flakes"
     ];
+
+    virtualisation.podman.enable = true;
 
     system.stateVersion = "25.11";
   };
