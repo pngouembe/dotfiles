@@ -27,6 +27,7 @@
         android-studio
         uv
         python3
+        pipx
       ];
     };
 }
