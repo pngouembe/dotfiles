@@ -74,8 +74,14 @@ export PATH="$PATH:/usr/local/sbin:$HOME/.local/bin:$HOME/neovim/bin"
 # Fix tmux colors
 export TERM=xterm-256color
 
+# Force Nerd Fonts for pi-powerline-footer extension
+export POWERLINE_NERD_FONTS=1
+
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 export CARGO_HOME="$HOME/.cargo"
 export PATH="$CARGO_HOME/bin:$PATH"
+
+# npm global installs go to a writable prefix (Nix store nodejs is read-only)
+export PATH="$HOME/.npm-global/bin:$PATH"
