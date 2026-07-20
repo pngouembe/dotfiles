@@ -13,6 +13,11 @@ alias lst='eza --tree --level=2 --group-directories-first --git --icons=auto'
 alias c='clear'
 alias s='source ~/.zshrc'
 
+# OH MY PI --------------------------------------------------------------------
+# Lean orchestrator: main agent gets only read/write/bash/task and delegates
+# everything else to subagents (see ~/.omp/agent/agents/*.md).
+alias ompl='omp --tools read,write,bash,task'
+
 # GIT ALIASES -----------------------------------------------------------------
 alias gc='git commit'
 alias gco='git checkout'
