@@ -48,12 +48,12 @@
     "dark": "Catppuccin Frappé",
   },
   "edit_predictions": {
-    "mode": "eager",
+    "mode": "subtle",
     "provider": "open_ai_compatible_api",
     "open_ai_compatible_api": {
+      "prompt_format": "qwen",
       "api_url": "http://localhost:1234/v1/completions",
-      "model": "google/gemma-4-26b-a4b",
-      "prompt_format": "infer",
+      "model": "ai9stars_g9v3-3b",
       "max_output_tokens": 512,
     },
   },
