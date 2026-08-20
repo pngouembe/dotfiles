@@ -19,6 +19,7 @@ start = [ "launcher", "clock", "group:g1", "active_window", "media" ]
 auto_hide = true
 enabled = true
 position = "bottom"
+reserve_space = false
 
 [lockscreen_widgets]
 enabled = false
@@ -59,13 +60,16 @@ position = "top_right"
 avatar_path = "/home/png/.face"
 clipboard_enabled = true
 font_family = "sans-serif"
+polkit_agent = true
 telemetry_enabled = false
 
+    [shell.launcher]
+    categories = true
+    sort_by_usage = true
+
     [shell.panel]
-    launcher_categories = true
-    launcher_placement = "centered"
-    launcher_session_search = true
-    launcher_sort_by_usage = true
+    launcher_placement = "floating"
+    launcher_position = "center"
 
     [shell.screenshot]
     copy_to_clipboard = true
