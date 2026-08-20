@@ -17,6 +17,12 @@
     networking.hostName = "nixos";
     networking.networkmanager.enable = true;
 
+    # Local services reachable from the LAN (both already bind 0.0.0.0).
+    networking.firewall.allowedTCPPorts = [
+      1234 # LM Studio OpenAI-compatible API
+      10369 # OpenFox web UI
+    ];
+
     time.timeZone = "Europe/Paris";
 
     i18n.defaultLocale = "en_US.UTF-8";
