@@ -13,9 +13,12 @@
           inherit pkgs;
           package = lib.mkForce hyprlandPkg;
 
-          # Drop the wrapper's default `--config <path>` so Hyprland falls back
-          # to ~/.config/hypr/hyprland.conf (provided by the dotfiles repo via
-          # stow). The wrapper still bundles env vars and extraPackages.
+          # Drop the wrapper's default `--config <path>` so Hyprland uses its
+          # own lookup and loads ~/.config/hypr/hyprland.lua (provided by the
+          # dotfiles repo via stow). Note that since 0.56 there is no fallback
+          # to hyprland.conf: if the .lua file is absent Hyprland reports
+          # "No config file found" and generates a default over the top.
+          # The wrapper still bundles env vars and extraPackages.
           flags."--config" = lib.mkForce false;
 
           env = {
@@ -25,7 +28,8 @@
 
           extraPackages = [
             noctaliaPkg
-            pkgs.hyprpolkitagent
+            # Polkit authentication is handled by noctalia's own agent
+            # (shell.polkit_agent), so no separate agent is bundled here.
             pkgs.satty # screenshot annotation editor piped from noctalia
           ];
         }
