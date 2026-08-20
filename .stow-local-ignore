@@ -7,6 +7,10 @@
 \.stowrc
 \.stow-local-ignore
 
+# Project-local Claude Code settings. Belongs to this repo as a working
+# directory, not to ~/.config — the real user config lives in ~/.claude.
+^/\.claude
+
 # Repo docs and install plumbing (not config)
 ^/README\.md
 ^/justfile
