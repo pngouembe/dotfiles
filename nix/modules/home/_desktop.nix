@@ -64,7 +64,9 @@
     spotify
 
     # Windows apps (Wine prefix manager)
-    bottles
+    # nixpkgs patches in an "Unsupported Environment" popup on every launch,
+    # since upstream only supports the Flatpak build. It is informational only.
+    (bottles.override { removeWarningPopup = true; })
 
     # Fonts
     nerd-fonts.fira-code
