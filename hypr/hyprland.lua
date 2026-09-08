@@ -186,15 +186,31 @@ hl.device({
 
 local mainMod = "SUPER"
 
+-- Focus the first window whose class matches `pattern` (a Lua pattern, matched
+-- against the lowercased class), or run `cmd` when no such window exists.
+-- Hyprland 0.56 made `hyprctl dispatch` take Lua, so the old shell one-liners
+-- (`hyprctl dispatch focuswindow class:zen`) no longer parse and silently fail.
+local function focus_or_launch(pattern, cmd)
+    return function()
+        for _, w in ipairs(hl.get_windows()) do
+            if w.class:lower():match(pattern) then
+                hl.dispatch(hl.dsp.focus({ window = "address:" .. w.address }))
+                return
+            end
+        end
+        hl.exec_cmd(cmd)
+    end
+end
+
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("zeditor"))
-hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit"))
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd([[command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch "hl.dsp.exit()"]]))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd('if hyprctl clients | grep -q "class: zen"; then hyprctl dispatch focuswindow class:zen; else zen; fi'))
-hl.bind(mainMod .. " + G", hl.dsp.exec_cmd('if hyprctl clients | grep -qi "class: steam"; then hyprctl dispatch focuswindow class:steam; else steam; fi'))
+hl.bind(mainMod .. " + B", focus_or_launch("^zen$", "zen"))
+hl.bind(mainMod .. " + G", focus_or_launch("^steam$", "steam"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 
