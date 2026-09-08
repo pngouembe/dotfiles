@@ -36,6 +36,11 @@ local menu        = "hyprlauncher"
 -------------------
 
 hl.on("hyprland.start", function()
+    -- Brings up graphical-session.target (see nix/modules/home/_desktop.nix),
+    -- without which xdg-desktop-portal refuses to start and GTK4 apps render
+    -- in light mode.
+    hl.exec_cmd("systemctl --user start hyprland-session.target")
+
     -- Polkit authentication is handled by noctalia's built-in agent
     -- (shell.polkit_agent in ~/.config/noctalia/config.toml), so no separate
     -- hyprpolkitagent service is started here.
