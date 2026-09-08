@@ -7,12 +7,28 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "language_models": {
+    "llama.cpp": {
+      "api_url": "http://localhost:8083"
+    }
+  },
   "buffer_font_family": "FiraCode Nerd Font Mono",
   "cli_default_open_behavior": "existing_window",
   "agent": {
+    "tool_permissions": {
+      "tools": {
+        "terminal": {
+          "always_allow": [
+            {
+              "pattern": "^just\\s+check(\\s|$)"
+            }
+          ]
+        }
+      }
+    },
     "default_model": {
       "provider": "lmstudio",
-      "model": "google/gemma-4-26b-a4b",
+      "model": "qwen3.6-35b-a3b-mtp",
       "enable_thinking": false,
     },
     "dock": "right",
