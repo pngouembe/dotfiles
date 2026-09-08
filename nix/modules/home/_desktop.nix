@@ -63,6 +63,9 @@
     syncthing
     spotify
 
+    # Windows apps (Wine prefix manager)
+    bottles
+
     # Fonts
     nerd-fonts.fira-code
   ];
