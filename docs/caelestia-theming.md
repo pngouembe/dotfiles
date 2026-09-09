@@ -106,6 +106,44 @@ template on every scheme change (`caelestia/utils/theme.py: apply_fuzzel`),
 **do not stow `fuzzel/fuzzel.ini`** — it is generated, and stowing it would
 fight caelestia for the file.
 
+## Hyprland border colours
+
+Window borders follow the wallpaper too. Caelestia rewrites
+`~/.config/hypr/scheme/current.lua` — a plain Lua table of the active palette —
+on every scheme and wallpaper change, but it *only writes the file*. Nothing
+pushes those colours into Hyprland, so on their own the borders stay at whatever
+literals the config set.
+
+Two pieces close that gap:
+
+1. `apply_scheme_borders()` in [`hypr/hyprland.lua`](../hypr/hyprland.lua) reads
+   that file and maps the palette onto the borders — `primary` → `tertiary` as
+   the active gradient, `outlineVariant` for inactive. It is a global on
+   purpose, and it is called once at config load.
+2. The caelestia `theme.postHook` in [`caelestia/cli.json`](../caelestia/cli.json)
+   re-runs it after every colour application:
+
+   ```json
+   { "theme": { "postHook": "hyprctl eval 'apply_scheme_borders()' >/dev/null 2>&1" } }
+   ```
+
+`theme.postHook` fires from `apply_colours`, which runs on scheme changes *and*
+on every `caelestia wallpaper -f` — so variety's rotation drives it as well.
+
+Two things make this work that are worth knowing:
+
+- **`hyprctl keyword` does not work under the Lua config provider.** It refuses
+  with `keyword can't work with non-legacy parsers. Use eval.` The equivalent is
+  `hyprctl eval '<lua>'`, which executes against the live config state.
+- **Lua globals persist between `hyprctl eval` calls.** That is what lets the
+  hook be a bare `apply_scheme_borders()` instead of re-sending the colours, so
+  the role mapping lives in exactly one place and the hook never needs updating
+  when it changes.
+
+The literal colours left in the `general.col` block are a fallback for a missing
+or half-written scheme file; `apply_scheme_borders()` returns false and leaves
+the borders alone in that case rather than blanking them.
+
 ## Wallpapers: variety
 
 caelestia browses and sets wallpapers (`>wallpaper ` in the launcher, or Nexus →
