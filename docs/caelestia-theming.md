@@ -276,10 +276,26 @@ rm -rf ~/Pictures/Wallpapers/catppuccin-mocha/.git
 
 Two separate things filter wallpapers, and they fail differently.
 
-**The shell picker is stale.** `>wallpaper ` and Nexus → Wallpapers read a
-`FileSystemModel` (`services/Wallpapers.qml`) that scans at startup. Dropping a
-whole new directory tree into the wallpapers folder from outside does not
-register, and the picker keeps showing the old set. Restart the shell:
+**The shell picker shows only part of the library.** `>wallpaper ` and Nexus →
+Wallpapers read a `FileSystemModel` (`services/Wallpapers.qml`). It enumerates
+the tree fully at startup, but it does not converge while files are being
+written underneath it: each filesystem event produces a partial update, and it
+then sits on that partial list. Measured directly — the picker held at 45
+entries through 90s of an idle filesystem, jumped to 76 the moment three files
+landed, then held at 76 through another 90s. It does not heal with time; only
+the arrival of more events moves it, and never to the full count.
+
+So a picker showing a fraction of the library is a symptom, not the disease:
+**something is still writing to the wallpapers folder.** Check before reaching
+for a restart:
+
+```sh
+tail -3 ~/.config/variety/variety.log     # is variety still downloading?
+```
+
+The usual culprit is variety never finishing (see below). Once writes have
+genuinely stopped, one restart against the quiet filesystem enumerates
+everything and it stays complete:
 
 ```sh
 caelestia shell -k
@@ -290,10 +306,44 @@ setsid qs -c caelestia -n -d >/dev/null 2>&1 < /dev/null &
 with the shell that launched it when run from a non-interactive command, which
 leaves the desktop with no bar. `setsid` is what actually detaches it.
 
+### Why variety may never stop downloading
+
+Variety's download thread runs until every downloader has more than
+`MAX_UNSEEN_PER_DOWNLOADER` (10) *unseen* images. An image only counts as unseen
+if it passes `image_ok`. Anything rejected there is downloaded and then
+discarded, so a filter that rejects most images means the queue never fills and
+variety downloads forever — which in turn keeps the picker permanently partial.
+
+Two settings caused exactly that here, both variety defaults:
+
+- `lightness_enabled = True` with `lightness_mode = 0` (Dark) rejects any image
+  whose dominant lightness is >= 75. Sampled against the actual downloads, that
+  was **65% of them**. Turned off: the `dynamic` scheme already flips light/dark
+  to match whatever wallpaper is showing, so constraining wallpapers to dark
+  ones bought nothing.
+- `quota_size = 1000` (MB) with the download folder at 836 MB. `purge_downloaded`
+  deletes oldest-first once the folder passes 95% of quota, and deleting a file
+  drops it from `unseen_downloads`, which triggers more downloading — a
+  self-sustaining download/delete loop. Raised to 3000.
+
+After both changes variety filled its queues and went silent, verified over
+5 minutes of no log writes; the picker then enumerated all 383 images on one
+restart and stayed complete.
+
+In steady state variety fetches roughly one image per `change_interval`, which
+is far too little churn to disturb the model.
+
+> **Changing a source URL orphans its download folder.** The folder name is
+> derived from the query, so adding `ratios=landscape` made variety abandon its
+> old folders and start new ones. The old images stay on disk and still show in
+> the picker, but nothing refreshes them. `ls "~/Pictures/Wallpapers/Downloaded by Variety"`
+> shows the orphans; delete them if you do not want them.
+
 **`caelestia wallpaper -r` filters by size.** It drops anything below
 `threshold` (default 0.8) of the smallest monitor dimension. On a 2560x1440
-screen that means images under 2048x1152, which excludes 161 of the 333
-Catppuccin wallpapers — most of them 1920x1080. Use `-n` to disable the filter:
+screen that means images under 2048x1152. This only bites if the library
+contains undersized images at all — the Catppuccin pack was pruned to native
+resolution, so it no longer does. If it did, `-n` disables the filter:
 
 ```sh
 caelestia wallpaper -r -n     # random over all 375, not just the 213 large ones
