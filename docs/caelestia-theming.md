@@ -207,6 +207,61 @@ Variety's first download can take a couple of minutes: with an empty
 off for 180s when it finds no usable downloader. `variety --next` forces it
 along. Progress is in `~/.config/variety/variety.log`.
 
+### Catppuccin wallpaper pack
+
+`~/Pictures/Wallpapers/catppuccin-mocha` is a clone of
+[orangci/walls-catppuccin-mocha](https://github.com/orangci/walls-catppuccin-mocha)
+(333 images), with `.git` deleted afterwards — the shallow clone's pack was
+386 MB, roughly half the download. It is wired into variety as a `folder`
+source, so it rotates alongside the Wallhaven downloads.
+
+To refresh it later, re-clone rather than pull (there is no `.git` left):
+
+```sh
+rm -rf ~/Pictures/Wallpapers/catppuccin-mocha
+git clone --depth 1 https://github.com/orangci/walls-catppuccin-mocha.git \
+    ~/Pictures/Wallpapers/catppuccin-mocha
+rm -rf ~/Pictures/Wallpapers/catppuccin-mocha/.git
+```
+
+### When new wallpapers do not show up
+
+Two separate things filter wallpapers, and they fail differently.
+
+**The shell picker is stale.** `>wallpaper ` and Nexus → Wallpapers read a
+`FileSystemModel` (`services/Wallpapers.qml`) that scans at startup. Dropping a
+whole new directory tree into the wallpapers folder from outside does not
+register, and the picker keeps showing the old set. Restart the shell:
+
+```sh
+caelestia shell -k
+setsid qs -c caelestia -n -d >/dev/null 2>&1 < /dev/null &
+```
+
+`caelestia shell -d` is documented as "start the shell detached", but it dies
+with the shell that launched it when run from a non-interactive command, which
+leaves the desktop with no bar. `setsid` is what actually detaches it.
+
+**`caelestia wallpaper -r` filters by size.** It drops anything below
+`threshold` (default 0.8) of the smallest monitor dimension. On a 2560x1440
+screen that means images under 2048x1152, which excludes 161 of the 333
+Catppuccin wallpapers — most of them 1920x1080. Use `-n` to disable the filter:
+
+```sh
+caelestia wallpaper -r -n     # random over all 375, not just the 213 large ones
+```
+
+Do **not** reach for `-t` to lower the threshold instead: the argument is
+declared without `type=float`, so the value stays a string and
+`caelestia wallpaper -r -t 0.7` dies with
+`TypeError: '>=' not supported between instances of 'int' and 'str'`.
+`-n` is the only working escape hatch.
+
+This filter applies *only* to `-r`. `caelestia wallpaper -f <file>` does no size
+checking, and neither does the shell picker, so variety already rotates through
+every Catppuccin wallpaper regardless of resolution — it goes through the
+bridge, which calls `-f`.
+
 ### Going back to a fixed palette
 
 The wallpaper only drives the colours while the scheme is `dynamic`:
