@@ -3,10 +3,7 @@
 # Patterns with `/` match paths relative to the package root.
 
 # VCS and stow metadata
-# NB: a .stow-local-ignore replaces stow's built-in default list rather than
-# adding to it, so entries like .gitignore have to be spelled out here.
 \.git
-\.gitignore
 \.stowrc
 \.stow-local-ignore
 
