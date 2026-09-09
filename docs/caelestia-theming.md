@@ -1,4 +1,9 @@
-# Caelestia theming: real Catppuccin, and the theme picker
+# Caelestia theming: wallpapers, dynamic colours, and Catppuccin
+
+**Current setup:** the active scheme is `dynamic`, so colours are derived from
+the wallpaper, and [variety](#wallpapers-variety) downloads and rotates
+wallpapers automatically. `catppuccin-true` is installed alongside as the
+fixed-palette alternative — see [switching back](#going-back-to-a-fixed-palette).
 
 ## Why the bundled `catppuccin` scheme doesn't look like Catppuccin
 
@@ -101,11 +106,87 @@ template on every scheme change (`caelestia/utils/theme.py: apply_fuzzel`),
 **do not stow `fuzzel/fuzzel.ini`** — it is generated, and stowing it would
 fight caelestia for the file.
 
+## Wallpapers: variety
+
+caelestia browses and sets wallpapers (`>wallpaper ` in the launcher, or Nexus →
+Wallpapers) but cannot *download* them — `caelestia wallpaper` only takes a
+local file. [variety](https://peterlevi.com/variety/) fills that gap: it pulls
+wallpapers from Wallhaven, Unsplash, Bing, NASA APOD and reddit on a timer.
+
+```sh
+sudo pacman -S variety
+```
+
+### Wiring it to caelestia
+
+Variety has no Hyprland support of its own, and knows nothing about caelestia.
+It shells out to a script for the actual wallpaper change, which is the hook
+used here — [`variety/set-wallpaper-caelestia`](../variety/set-wallpaper-caelestia),
+stowed to `~/.config/variety/set-wallpaper-caelestia`:
+
+```sh
+exec caelestia wallpaper -f "$1"
+```
+
+That single call is enough. `caelestia wallpaper -f` sets the wallpaper and,
+when the active scheme is `dynamic`, re-derives the entire palette from the
+image and auto-picks light/dark mode and Material variant to match it
+(`caelestia/utils/wallpaper.py: set_wallpaper`). So the theme follows the
+wallpaper with no extra glue.
+
+> **Why the hook is not in `~/.config/variety/scripts/`.** That is variety's
+> documented place for it, but variety *regenerates* the scripts in that folder
+> on every version upgrade (`VarietyWindow.upgrade_script` — it keeps a
+> `set_wallpaper_before_<version>` backup and copies its own default over the
+> top). An edit there would be silently reverted. Pointing variety at a path
+> outside that folder avoids the problem entirely.
+
+Configure it in `~/.config/variety/variety.conf` **while variety is not
+running** (it rewrites that file on exit):
+
+```ini
+set_wallpaper_script = ~/.config/variety/set-wallpaper-caelestia
+download_folder = ~/Pictures/Wallpapers
+```
+
+`download_folder` points at caelestia's wallpaper directory
+(`CAELESTIA_WALLPAPERS_DIR`, default `~/Pictures/Wallpapers`) so that everything
+variety downloads is also browsable in caelestia's own picker.
+
+Two constraints worth knowing: the script **must be executable** (variety
+checks `os.access(script, os.X_OK)` and silently falls back to gsettings
+otherwise), and variety **kills it after 10 seconds**. A full set plus re-theme
+measures ~0.2s, since caelestia extracts colour from a 128px thumbnail rather
+than the full image, so there is plenty of headroom.
+
+Sources and rotation interval are set in variety's Preferences GUI, as is "run
+at startup" — which writes `~/.config/autostart/variety.desktop`, so Hyprland
+needs no autostart entry.
+
+### Going back to a fixed palette
+
+The wallpaper only drives the colours while the scheme is `dynamic`:
+
+```sh
+caelestia scheme set -n catppuccin-true -f mocha   # fixed Catppuccin again
+caelestia scheme set -n dynamic                    # back to wallpaper-derived
+```
+
+Variety keeps rotating wallpapers either way; with a named scheme the colours
+simply stop following along. `dynamic` needs a wallpaper to already be set, or
+it errors.
+
 ## Config tracked here
 
-`caelestia/shell.json` is stowed to `~/.config/caelestia/shell.json`. The
-active scheme itself is *not* config — it lives in
-`~/.local/state/caelestia/scheme.json` and is written by the CLI.
+`caelestia/shell.json` is stowed to `~/.config/caelestia/shell.json`, and
+`variety/set-wallpaper-caelestia` to `~/.config/variety/set-wallpaper-caelestia`.
+
+Two things deliberately *not* tracked, because their owners rewrite them:
+
+- `~/.local/state/caelestia/scheme.json` — the active scheme is state, written
+  by the CLI, not config.
+- `~/.config/variety/variety.conf` — variety rewrites it whenever preferences
+  change or it exits. Only the two keys above need setting by hand.
 
 Because `~/.config/caelestia/shell.json` already exists as a real file, stow
 will refuse to link over it the first time:
