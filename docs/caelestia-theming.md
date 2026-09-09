@@ -169,14 +169,37 @@ downloads until a source is added. Format is
 `srcN = <enabled>|<type>|<location>`, and the `srcN` keys must be unique:
 
 ```ini
-src20 = True|wallhaven|https://wallhaven.cc/search?categories=100&purity=100&atleast=2560x1440&sorting=toplist&order=desc&topRange=1y
-src21 = True|wallhaven|https://wallhaven.cc/search?q=landscape&categories=100&purity=100&atleast=2560x1440&sorting=random
-src22 = True|wallhaven|https://wallhaven.cc/search?colors=424153&categories=100&purity=100&atleast=2560x1440&sorting=relevance
+src4 = True|wallhaven|https://wallhaven.cc/search?categories=100&purity=100&atleast=2560x1440&ratios=landscape&sorting=toplist&order=desc&topRange=1y
+src5 = True|wallhaven|https://wallhaven.cc/search?q=landscape&categories=100&purity=100&atleast=2560x1440&ratios=landscape&sorting=random
+src6 = True|wallhaven|https://wallhaven.cc/search?colors=424153&categories=100&purity=100&atleast=2560x1440&ratios=landscape&sorting=relevance
+src12 = True|folder|/home/png/Pictures/Wallpapers/catppuccin-mocha
 ```
 
-`atleast=2560x1440` matters: caelestia's picker filters out images below a
+Variety renumbers `srcN` keys itself on exit, so the numbers above are whatever
+it settled on rather than something to preserve.
+
+`ratios=landscape` matters as much as `atleast=`. On its own, `atleast=2560x1440`
+admits tall portraits — a 4000x7417 image clears both bounds — which then get
+downloaded and merely skipped at display time. Filtering by ratio stops them
+server-side, so they are never fetched.
+
+`atleast=2560x1440` matters: `caelestia wallpaper -r` filters out images below a
 percentage of your largest monitor, so smaller downloads would be fetched and
 then never offered.
+
+Belt and braces, `min_size` re-checks the same thing locally:
+
+```ini
+min_size_enabled = True
+min_size = 100
+use_landscape_enabled = True
+```
+
+`min_size` is a percentage of the GDK screen size (2560x1440 here, reported
+correctly under XWayland), so 100 means native resolution or better. Note it is
+a *display-time* filter (`VarietyWindow.image_ok`), not a download-time one —
+it stops an undersized image being shown, but the download already happened.
+The query parameters are the only thing that prevents the fetch.
 
 Two gotchas found the hard way:
 
@@ -206,6 +229,31 @@ Variety's first download can take a couple of minutes: with an empty
 `download_folder` there is nothing to show yet, and the download thread backs
 off for 180s when it finds no usable downloader. `variety --next` forces it
 along. Progress is in `~/.config/variety/variety.log`.
+
+### The download folder, and what the quota can delete
+
+Variety picks its real download folder at startup
+(`VarietyWindow.get_real_download_folder`): if `download_folder` is missing or
+**empty**, it claims it outright and drops a `.variety_download_folder` marker
+in it; if the folder already has files, it uses a `Downloaded by Variety`
+subfolder instead.
+
+This is worth getting right, because the quota (`quota_size`, default 1000 MB)
+purges **oldest images first** across everything under that folder
+(`purge_downloaded` just walks it), with no notion of which files it downloaded.
+
+Here the marker sits in `~/Pictures/Wallpapers/Downloaded by Variety/`, so the
+quota only ever touches variety's own downloads and the Catppuccin pack beside
+it is out of reach. Had variety claimed the top level — which it does when
+pointed at an empty folder — the pack would have been eligible for deletion.
+Check with:
+
+```sh
+find ~/Pictures/Wallpapers -maxdepth 2 -name .variety_download_folder
+```
+
+If that marker turns up at the top level, move it (and variety's downloads)
+into a subfolder, or keep the local packs somewhere outside `download_folder`.
 
 ### Catppuccin wallpaper pack
 
