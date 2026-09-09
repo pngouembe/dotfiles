@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# Variety -> caelestia bridge.
+#
+# Variety calls this with the wallpaper it picked:
+#   $1  absolute path to the (processed) wallpaper
+#   $2  "auto" | "manual" | "refresh"
+#   $3  absolute path to the original image
+#   $4  display mode
+#
+# Only $1 is needed: `caelestia wallpaper -f` sets the wallpaper *and*, when the
+# active scheme is `dynamic`, re-derives the whole palette from the image and
+# auto-picks light/dark mode and Material variant to match it. So pointing
+# variety here is what makes the colour scheme follow the wallpaper.
+#
+# This deliberately lives OUTSIDE ~/.config/variety/scripts/. Variety
+# regenerates the scripts in that folder on every version upgrade
+# (VarietyWindow.upgrade_script), which would silently revert an edit made
+# there. Variety reads this path from the `set_wallpaper_script` key in
+# ~/.config/variety/variety.conf instead -- see docs/caelestia-theming.md.
+#
+# Variety kills the script after 10 seconds; a full set + re-theme measures
+# about 0.2s, since caelestia extracts colour from a 128px thumbnail.
+
+set -euo pipefail
+
+if [ -z "${1:-}" ]; then
+    echo "usage: $(basename "$0") <wallpaper-path>" >&2
+    exit 1
+fi
+
+exec caelestia wallpaper -f "$1"

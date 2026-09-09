@@ -1,0 +1,17 @@
+{
+    "appearance": {
+        "transparency": {
+            "enabled": false
+        }
+    },
+    "dashboard": {
+        "showWeather": true
+    },
+    "launcher": {
+        "actionPrefix": ">"
+    },
+    "services": {
+        "useFahrenheit": false,
+        "useTwelveHourClock": false
+    }
+}
