@@ -142,16 +142,55 @@ wallpaper with no extra glue.
 > outside that folder avoids the problem entirely.
 
 Configure it in `~/.config/variety/variety.conf` **while variety is not
-running** (it rewrites that file on exit):
+running** (it rewrites that file on exit). Start from variety's own default at
+`/usr/lib/python3*/site-packages/variety/data/config/variety.conf` rather than
+writing one from scratch, so every key it expects is present, then change:
 
 ```ini
 set_wallpaper_script = ~/.config/variety/set-wallpaper-caelestia
 download_folder = ~/Pictures/Wallpapers
+change_interval = 1800
+change_on_start = True
 ```
 
 `download_folder` points at caelestia's wallpaper directory
 (`CAELESTIA_WALLPAPERS_DIR`, default `~/Pictures/Wallpapers`) so that everything
-variety downloads is also browsable in caelestia's own picker.
+variety downloads is also browsable in caelestia's own picker. Variety files
+downloads into a per-source subfolder there; caelestia globs recursively, so
+they still show up.
+
+`change_interval` is in seconds and defaults to 300. Every change re-themes the
+whole desktop here, so 5 minutes is busy — 1800 (30 min) is calmer.
+
+### Sources
+
+The shipped defaults are local folders plus a disabled Flickr entry, so nothing
+downloads until a source is added. Format is
+`srcN = <enabled>|<type>|<location>`, and the `srcN` keys must be unique:
+
+```ini
+src20 = True|wallhaven|https://wallhaven.cc/search?categories=100&purity=100&atleast=2560x1440&sorting=toplist&order=desc&topRange=1y
+src21 = True|wallhaven|https://wallhaven.cc/search?q=landscape&categories=100&purity=100&atleast=2560x1440&sorting=random
+src22 = True|wallhaven|https://wallhaven.cc/search?colors=424153&categories=100&purity=100&atleast=2560x1440&sorting=relevance
+```
+
+`atleast=2560x1440` matters: caelestia's picker filters out images below a
+percentage of your largest monitor, so smaller downloads would be fetched and
+then never offered.
+
+Two gotchas found the hard way:
+
+- Colour search is a top-level **`colors=`** parameter, not `q=colors:...`. The
+  latter parses fine and silently returns zero images.
+- Wallhaven only accepts colours from [its own fixed
+  palette](https://wallhaven.cc/search), so Catppuccin's `1e1e2e` is not a valid
+  value — `424153` is the nearest dark purple, and is what `src22` uses to bias
+  towards wallpapers whose derived palette stays in Catppuccin territory.
+
+No Wallhaven API key is needed for SFW searches (`purity=100`);
+`wallhaven_api_key` can stay empty. Downloads are capped by `quota_size`
+(default 1000 MB) once `quota_enabled` is on, and all downloading is gated
+behind `internet_enabled`.
 
 Two constraints worth knowing: the script **must be executable** (variety
 checks `os.access(script, os.X_OK)` and silently falls back to gsettings
@@ -159,9 +198,14 @@ otherwise), and variety **kills it after 10 seconds**. A full set plus re-theme
 measures ~0.2s, since caelestia extracts colour from a 128px thumbnail rather
 than the full image, so there is plenty of headroom.
 
-Sources and rotation interval are set in variety's Preferences GUI, as is "run
-at startup" — which writes `~/.config/autostart/variety.desktop`, so Hyprland
-needs no autostart entry.
+All of the above is also editable in variety's Preferences GUI, as is "run at
+startup" — which writes `~/.config/autostart/variety.desktop`, so Hyprland needs
+no autostart entry of its own.
+
+Variety's first download can take a couple of minutes: with an empty
+`download_folder` there is nothing to show yet, and the download thread backs
+off for 180s when it finds no usable downloader. `variety --next` forces it
+along. Progress is in `~/.config/variety/variety.log`.
 
 ### Going back to a fixed palette
 
@@ -188,10 +232,17 @@ Two things deliberately *not* tracked, because their owners rewrite them:
 - `~/.config/variety/variety.conf` — variety rewrites it whenever preferences
   change or it exits. Only the two keys above need setting by hand.
 
-Because `~/.config/caelestia/shell.json` already exists as a real file, stow
-will refuse to link over it the first time:
+Both of those already exist as real files on this machine, and stow refuses to
+link over a real file, so they need removing once before the first `stow`:
 
 ```sh
-rm ~/.config/caelestia/shell.json
+rm ~/.config/caelestia/shell.json ~/.config/variety/set-wallpaper-caelestia
 cd ~/dotfiles && stow .
+```
+
+Check the bridge survived as an executable symlink afterwards — variety silently
+falls back to gsettings (which does nothing under Hyprland) if it is not:
+
+```sh
+test -x ~/.config/variety/set-wallpaper-caelestia && echo ok
 ```
