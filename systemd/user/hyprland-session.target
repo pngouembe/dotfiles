@@ -1,0 +1,20 @@
+# Hyprland session target (Arch/CachyOS counterpart of the NixOS unit defined in
+# nix/modules/home/_desktop.nix).
+#
+# Neither NixOS's programs.hyprland nor Arch's hyprland package ships a session
+# target, and Hyprland launched straight from a greeter (without uwsm) never
+# activates graphical-session.target on its own. xdg-desktop-portal has
+# `Requisite=graphical-session.target`, so it refuses to start, and
+# GTK4/libadwaita apps -- which read color-scheme from the portal on Wayland,
+# not from GSettings -- fall back to light Adwaita.
+#
+# BindsTo pulls graphical-session.target up as a dependency, which is the only
+# way to start it (that unit is RefuseManualStart=yes).
+#
+# Started from hypr/hyprland.lua's autostart block.
+
+[Unit]
+Description=hyprland compositor session
+BindsTo=graphical-session.target
+Wants=graphical-session-pre.target
+After=graphical-session-pre.target
