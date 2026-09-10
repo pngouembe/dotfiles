@@ -1,0 +1,47 @@
+# ReGreet settings -> /etc/greetd/regreet.toml
+#
+# Keys follow /usr/share/doc/greetd-regreet/regreet.sample.toml (0.5.0).
+# Colours are NOT set here: they live in /etc/greetd/regreet.css, which
+# scripts/greeter-theme.sh generates from the live caelestia palette.
+# See docs/login-greeter.md.
+
+# Still ask for the user and session rather than reusing the last pair. There is
+# only one user here, but the session list is the only way to pick between the
+# uwsm and plain Hyprland entries without editing config from a TTY.
+skip_selection = false
+
+[background]
+# A copy of the current caelestia wallpaper. The greeter user cannot read
+# /home/png (0700), so scripts/greeter-theme.sh copies the bytes here and
+# repoints this symlink; re-run it after changing wallpaper.
+path = "/etc/greetd/background"
+fit = "Cover"
+
+[GTK]
+application_prefer_dark_theme = true
+# Rubik is caelestia's UI font and is installed system-wide. The shell itself
+# renders in the Google Sans Flex it bundles under /etc/xdg/quickshell, but that
+# is a QML asset, not a fontconfig font, so GTK cannot resolve it.
+font_name = "Rubik 14"
+# Adwaita for both: Papirus-Dark and the desktop's cursor theme live in
+# ~/.local/share/icons, which the greeter user cannot reach.
+cursor_theme_name = "Adwaita"
+cursor_blink = true
+icon_theme_name = "Adwaita"
+theme_name = "Adwaita-dark"
+
+[commands]
+reboot = ["systemctl", "reboot"]
+poweroff = ["systemctl", "poweroff"]
+x11_prefix = ["startx", "/usr/bin/env"]
+
+[appearance]
+greeting_msg = "Welcome back"
+
+[widget.clock]
+# 24-hour, matching caelestia's services.useTwelveHourClock = false.
+format = "%H:%M   %A %d %B"
+resolution = "1s"
+# Wide enough for the longest weekday/month pair; too small and GTK reflows the
+# whole header as the date changes.
+label_width = 380

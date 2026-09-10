@@ -24,6 +24,10 @@
 ^/flake\.lock
 ^/nix
 
+# Login greeter config: installed into /etc/greetd by scripts/setup-greeter.sh,
+# not linked into ~/.config.
+^/greetd
+
 # Editor leftovers
 .+\.swp$
 .+\.bak$

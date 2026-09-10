@@ -1,0 +1,21 @@
+# greetd config for the ReGreet login screen -> /etc/greetd/config.toml
+#
+# Installed by scripts/setup-greeter.sh; see docs/login-greeter.md.
+#
+# ReGreet is a GTK4 client, so it needs a Wayland compositor to draw into.
+# cage is a kiosk compositor: one fullscreen surface, no decorations, and it
+# exits when the client exits -- which is what greetd wants, since it treats
+# the greeter process ending as "hand the session over".
+
+[terminal]
+# VT 1, the same one cosmic-greeter used, so nothing else claims it.
+vt = 1
+
+[default_session]
+# -s allows VT switching (Ctrl+Alt+F2 etc.) out of the greeter, which is the
+# escape hatch if the greeter itself ever fails to start.
+command = "cage -s -- regreet"
+# The unprivileged user greetd ships for this. It is in the `video` group,
+# which is all cage needs to drive the GPU. It cannot read /home/png (0700),
+# so the wallpaper and stylesheet are copied into /etc/greetd instead.
+user = "greeter"
