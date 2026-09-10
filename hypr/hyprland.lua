@@ -123,6 +123,24 @@ end)
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 
+-- Qt platform theme (from caelestia). Without this, Qt loads no platform theme
+-- at all, QIcon::themeName() stays empty and icon lookups fall back to bare
+-- `hicolor` -- so the caelestia launcher renders blanks for every app whose
+-- .desktop Icon= is a freedesktop generic name (network-wired, text-editor,
+-- utilities-terminal, ...) rather than a private icon the package dropped into
+-- hicolor itself. qtengine reads ~/.config/qtengine/config.json, whose
+-- `theme.iconTheme` is the single source of truth for the icon theme
+-- (Papirus-Dark) and is kept in sync by caelestia's theming.
+--
+-- The shell only picks this up at launch, so after changing it restart the
+-- shell (`caelestia shell -k && caelestia shell -d`), not just `hyprctl reload`.
+--
+-- If qtengine is ever unavailable (it is packaged on Arch/CachyOS; the NixOS
+-- box would need it adding to nix/modules/home/_desktop.nix), quickshell also
+-- honours QS_ICON_THEME as a dependency-free override:
+--     hl.env("QS_ICON_THEME", "Papirus-Dark")
+hl.env("QT_QPA_PLATFORMTHEME", "qtengine")
+
 
 -----------------------
 ---- LOOK AND FEEL ----
