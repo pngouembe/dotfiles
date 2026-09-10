@@ -68,6 +68,21 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("systemctl --user start hyprpolkitagent.service")
 
     hl.exec_cmd("syncthing --no-browser")
+
+    -- Wallpaper rotation. Variety writes ~/.config/autostart/variety.desktop
+    -- when "run at startup" is ticked, and systemd's xdg-autostart generator
+    -- does turn that into app-variety@autostart.service -- but nothing here
+    -- ever activates xdg-desktop-autostart.target (it sits inactive with an
+    -- empty WantedBy), because Hyprland started from a greeter, without uwsm,
+    -- does not pull it in. So the generated unit never runs and variety never
+    -- came up. Starting it explicitly is also more selective than activating
+    -- that target, which would drag in every other autostart entry on the
+    -- system (Cosmic's initial setup, the geoclue demo agent, and so on).
+    --
+    -- The delay mirrors the one variety puts in its own .desktop file: with
+    -- change_on_start it sets a wallpaper the moment it comes up, and that
+    -- goes through `caelestia wallpaper -f`, so it wants the shell up first.
+    hl.exec_cmd([[sh -c "sleep 15 && exec variety"]])
 end)
 
 
