@@ -6,7 +6,7 @@ machine.
 ## Layout
 
 The repo is a single GNU stow package: every config file sits at the path it
-should occupy under `$HOME` (e.g. `.zshrc`, `.config/alacritty/alacritty.yml`).
+should occupy under `$HOME` (e.g. `.zshrc`, `.config/kitty/kitty.conf`).
 `.stowrc` sets `--target=$HOME` and `.stow-local-ignore` keeps repo metadata
 (README, justfile, scripts, etc.) out of the link set.
 

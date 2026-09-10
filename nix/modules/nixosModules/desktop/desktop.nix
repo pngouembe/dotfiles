@@ -55,9 +55,5 @@
       services.geoclue2.enable = true;
 
       programs.firefox.enable = true;
-
-      environment.systemPackages = [
-        pkgs.kitty
-      ];
     };
 }

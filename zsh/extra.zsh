@@ -69,6 +69,7 @@ fi
 
 export VISUAL=nvim
 export EDITOR=nvim
+export TERMINAL=kitty
 export PATH="$PATH:/usr/local/sbin:$HOME/.local/bin:$HOME/neovim/bin"
 
 # Fix tmux colors

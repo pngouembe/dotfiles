@@ -1,0 +1,5 @@
+# Preferred terminal emulators, most preferred first (freedesktop
+# default-terminal spec). Read by xdg-terminal-exec, which is what
+# org.gnome.desktop.default-applications.terminal points at, and what
+# desktop entries with Terminal=true are launched through.
+kitty.desktop

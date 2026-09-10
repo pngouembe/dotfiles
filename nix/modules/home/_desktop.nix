@@ -49,7 +49,7 @@
 
   home.packages = with pkgs; [
     # Terminal emulator
-    alacritty
+    kitty
 
     # System monitor
     resources

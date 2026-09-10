@@ -64,9 +64,8 @@ git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
 # Install z
 wget https://raw.githubusercontent.com/rupa/z/master/z.sh -O ~/.local/bin/z.sh
 
-# Install alacritty
-sudo add-apt-repository ppa:aslatter/ppa -y
-sudo apt install -y alacritty
+# Install kitty
+sudo apt install -y kitty
 
 # Install zsh auto suggestion
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions

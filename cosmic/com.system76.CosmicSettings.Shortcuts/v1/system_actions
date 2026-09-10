@@ -1,0 +1,13 @@
+// COSMIC system actions. cosmic-settings-config reads the system defaults from
+// /usr/share/cosmic/com.system76.CosmicSettings.Shortcuts/v1/system_actions
+// first, then `extend`s them with this file, so only the entries we actually
+// want to change belong here -- everything else (volume, brightness,
+// screenshot, launcher, ...) keeps its upstream command.
+//
+// Terminal is what Super+T (System(Terminal) in the default keybinds) runs.
+// cosmic-files' "Open Terminal" does not read this; it resolves the
+// x-scheme-handler/terminal mime default instead, which points at
+// kitty.desktop in ~/.config/mimeapps.list.
+{
+    Terminal: "kitty",
+}
