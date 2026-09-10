@@ -120,8 +120,35 @@ end)
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
 
+-- Everything below is inlined from caelestia's hyprland/env.lua. Displacing its
+-- hyprland.lua stops that module tree loading, so anything not repeated here is
+-- simply lost -- these are the vars that were live before the reclaim.
+--
+-- XDG_CURRENT_DESKTOP, XDG_SESSION_TYPE and XDG_SESSION_DESKTOP are in
+-- caelestia's env.lua too but deliberately not repeated: Hyprland exports all
+-- three itself (verified on a shell started before env.lua was ever applied).
+
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+-- Matches cursorSize above; caelestia read both from its variables.lua.
+hl.env("XCURSOR_THEME", "sweet-cursors")
+
+-- Toolkit backends. Without these, toolkits fall back to guessing from
+-- XDG_SESSION_TYPE; Electron in particular defaults to XWayland, which renders
+-- blurry on a scaled output.
+hl.env("GDK_BACKEND", "wayland,x11")
+hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+hl.env("SDL_VIDEODRIVER", "wayland,x11,windows")
+hl.env("CLUTTER_BACKEND", "wayland")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+
+-- Qt window handling: let the compositor draw decorations rather than Qt's own
+-- client-side ones, and honour per-output scale factors.
+hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
+hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
+
+-- Stops Java/AWT apps rendering as grey voids under a reparenting-free WM.
+hl.env("_JAVA_AWT_WM_NONREPARENTING", "1")
 
 -- Qt platform theme (from caelestia). Without this, Qt loads no platform theme
 -- at all, QIcon::themeName() stays empty and icon lookups fall back to bare
