@@ -49,6 +49,11 @@
       services.upower.enable = true;
       services.power-profiles-daemon.enable = true;
 
+      # Location provider for gammastep's night light, which is started from
+      # hypr/hyprland.lua's autostart block. Without it gammastep has no way to
+      # work out sunset and refuses to start.
+      services.geoclue2.enable = true;
+
       programs.firefox.enable = true;
 
       environment.systemPackages = [

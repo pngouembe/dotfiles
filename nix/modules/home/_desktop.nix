@@ -68,6 +68,10 @@
     # since upstream only supports the Flatpak build. It is informational only.
     (bottles.override { removeWarningPopup = true; })
 
+    # Night light, started from hypr/hyprland.lua's autostart block and
+    # located via services.geoclue2 (see nixosModules/desktop/desktop.nix)
+    gammastep
+
     # Fonts
     nerd-fonts.fira-code
   ];
