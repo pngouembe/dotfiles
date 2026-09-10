@@ -1,0 +1,4 @@
+# Claude Code scratch space. Holds git worktrees (.claude/worktrees/<name>),
+# which are checkouts of this same repo -- committing them would nest a copy of
+# the tree inside itself. Stow already skips this directory (.stow-local-ignore).
+.claude/
