@@ -92,6 +92,16 @@ directory = "/home/png/Pictures/Wallpapers"
 enabled = true
 fill_mode = "crop"
 
+    # Rotate through the local folder only -- noctalia never fetches anything
+    # from the network, which is why variety is no longer needed here.
+    # `recursive = false` keeps the old "Downloaded by Variety" subfolder out
+    # of the rotation.
+    [wallpaper.automation]
+    enabled = true
+    interval_seconds = 1800
+    order = "random"
+    recursive = false
+
 [weather]
 effects = true
 enabled = true
