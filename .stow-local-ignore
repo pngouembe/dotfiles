@@ -28,6 +28,9 @@
 # not linked into ~/.config.
 ^/greetd
 
+# SDDM config: installed into /etc/sddm.conf.d by scripts/setup-sddm.sh.
+^/sddm
+
 # Editor leftovers
 .+\.swp$
 .+\.bak$

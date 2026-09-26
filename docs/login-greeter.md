@@ -1,5 +1,8 @@
 # Login screen: ReGreet themed from the caelestia palette
 
+> **Superseded by SDDM** — see [login-sddm.md](login-sddm.md). This setup is
+> left installed as the fallback, and this page still describes it.
+
 **Current setup:** greetd runs [ReGreet](https://github.com/rharish101/ReGreet)
 inside a cage kiosk session, styled with the colours caelestia is using on the
 desktop. It replaces cosmic-greeter, which CachyOS installs by default.
