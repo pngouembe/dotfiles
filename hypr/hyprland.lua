@@ -979,3 +979,10 @@ local ok, noctalia = pcall(require, "noctalia")
 if ok then
     noctalia.apply_theme()
 end
+
+-- HyprMod (GUI settings editor) writes its settings to
+-- ~/.config/hypr/hyprland-gui.lua, which is machine-local and not tracked.
+-- Guarded like Noctalia's include so a missing file is a no-op. HyprMod appends
+-- the literal require("hyprland-gui") when it can't find it, and in doing so
+-- replaced this symlink with a plain copy, so the string stays in this comment.
+pcall(require, "hyprland-gui")
