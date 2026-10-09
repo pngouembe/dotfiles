@@ -1,0 +1,21 @@
+#!/bin/sh
+# Thumbnail a camera RAW file from the JPEG preview the camera embedded in it.
+#
+#     raw-thumbnailer <input> <output.png> <size>
+#
+# Lives under /usr/local/bin rather than $HOME: Nautilus runs thumbnailers in
+# a bubblewrap sandbox that only sees /usr, /etc and the input file.
+
+tmp=$(mktemp --suffix=.jpg) || exit 1
+trap 'rm -f "$tmp"' EXIT
+
+# JpgFromRaw is full size on most bodies; PreviewImage is the fallback
+exiftool -b -JpgFromRaw "$1" >"$tmp" 2>/dev/null
+[ -s "$tmp" ] || exiftool -b -PreviewImage "$1" >"$tmp" 2>/dev/null
+[ -s "$tmp" ] || exit 1
+
+# the preview carries no orientation of its own; copy the RAW's so portrait
+# shots aren't sideways
+exiftool -q -overwrite_original -tagsFromFile "$1" -Orientation "$tmp" 2>/dev/null
+
+exec vipsthumbnail "$tmp" --size "$3" -o "$2"

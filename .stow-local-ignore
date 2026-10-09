@@ -31,6 +31,10 @@
 # SDDM config: installed into /etc/sddm.conf.d by scripts/setup-sddm.sh.
 ^/sddm
 
+# RAW thumbnailer: installed into /usr/local by scripts/setup-raw-thumbnails.sh
+# (the thumbnailer sandbox can't see $HOME).
+^/thumbnailers
+
 # Editor leftovers
 .+\.swp$
 .+\.bak$
