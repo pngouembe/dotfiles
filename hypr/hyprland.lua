@@ -69,8 +69,9 @@ hl.on("hyprland.start", function()
     -- NixOS, systemd/user/hyprland-session.target on Arch/CachyOS), without
     -- which xdg-desktop-portal refuses to start and GTK4 apps render in light
     -- mode. Importing the environment first is what lets the portal and the
-    -- shell find the compositor.
-    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE")
+    -- shell find the compositor. XCOMPOSEFILE rides along so apps launched as
+    -- systemd units or via D-Bus activation also get ' + c = ç.
+    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE XCOMPOSEFILE")
     hl.exec_cmd("systemctl --user start hyprland-session.target")
 
     -- SHELL SWITCH (autostart)
@@ -149,6 +150,11 @@ hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
 
 -- Stops Java/AWT apps rendering as grey voids under a reparenting-free WM.
 hl.env("_JAVA_AWT_WM_NONREPARENTING", "1")
+
+-- us(intl): make ' + c give ç rather than ć. The en_US compose table maps
+-- dead_acute+c to ć; pt_BR's maps it to ç and is otherwise the same. On NixOS
+-- this came for free from the ibus that GNOME enabled; here nothing runs an IM.
+hl.env("XCOMPOSEFILE", "/usr/share/X11/locale/pt_BR.UTF-8/Compose")
 
 -- Qt platform theme (from caelestia). Without this, Qt loads no platform theme
 -- at all, QIcon::themeName() stays empty and icon lookups fall back to bare
