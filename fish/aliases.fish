@@ -79,3 +79,8 @@ end
 function gla --description 'Alias of gl'
     gl $argv
 end
+
+# DAVINCI RESOLVE -------------------------------------------------------------
+# Resolve's bundled Qt has no wayland plugin; with QT_QPA_PLATFORM="wayland;xcb"
+# (set in hyprland.lua) it exits silently instead of falling back to xcb.
+alias davinci-resolve 'QT_QPA_PLATFORM=xcb command davinci-resolve'
