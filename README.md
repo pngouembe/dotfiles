@@ -6,9 +6,9 @@ machine.
 ## Layout
 
 The repo is a single GNU stow package: every config file sits at the path it
-should occupy under `$HOME` (e.g. `.zshrc`, `.config/kitty/kitty.conf`).
-`.stowrc` sets `--target=$HOME` and `.stow-local-ignore` keeps repo metadata
-(README, justfile, scripts, etc.) out of the link set.
+should occupy under `~/.config` (e.g. `kitty/kitty.conf`, `hypr/hyprland.conf`).
+`.stowrc` sets `--target=$HOME/.config` and `.stow-local-ignore` keeps repo
+metadata (README, docs, justfile, scripts, etc.) out of the link set.
 
 ## Installing
 
@@ -18,7 +18,7 @@ Clone the repo, then from its root:
 stow .
 ```
 
-That symlinks every tracked config into `$HOME`. If a real file already exists
+That symlinks every tracked config into `~/.config`. If a real file already exists
 at a target path, stow will refuse — back it up or pass `--adopt` to absorb it.
 
 The justfile also provides `just install-dotfiles`, which installs stow first if

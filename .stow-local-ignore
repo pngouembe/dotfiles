@@ -4,6 +4,7 @@
 
 # VCS and stow metadata
 \.git
+\.gitignore
 \.stowrc
 \.stow-local-ignore
 
@@ -13,6 +14,7 @@
 
 # Repo docs and install plumbing (not config)
 ^/README\.md
+^/docs
 ^/justfile
 ^/bootstrap\.sh
 ^/scripts
