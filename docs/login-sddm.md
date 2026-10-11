@@ -74,6 +74,16 @@ the wallpaper — see [caelestia-theming.md](caelestia-theming.md).
   `/etc/X11/xorg.conf.d/00-keyboard.conf` (`localectl set-x11-keymap`), not from
   Hyprland's `kb_layout`.
 - **Avatar.** astronaut shows a username field rather than a picture.
+- **Logout.** caelestia's default logout (`["logout"]`, or
+  `loginctl terminate-user ""`) calls logind's `Session.Terminate`, which
+  SIGTERMs `sddm-helper` along with the rest of the session. The helper exits 1,
+  SDDM 0.21 reads that as an auth error and never restarts the greeter: black
+  screen until a reboot (journal: `sddm-helper (...) crashed (exit code 1)`).
+  [`caelestia/shell.json`](../caelestia/shell.json) sets the logout to
+  `uwsm stop` instead, so `uwsm start` exits on its own, the helper exits 0 and
+  the greeter comes back. `SUPER + M` (Hyprland exiting itself) takes the same
+  clean path. If it still happens: `Ctrl+Alt+F3`, log in,
+  `sudo systemctl restart sddm`.
 
 ## Going back to ReGreet
 

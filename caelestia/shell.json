@@ -27,6 +27,14 @@
     "launcher": {
         "actionPrefix": ">"
     },
+    "session": {
+        "commands": {
+            "logout": [
+                "uwsm",
+                "stop"
+            ]
+        }
+    },
     "services": {
         "useFahrenheit": false,
         "useTwelveHourClock": false
