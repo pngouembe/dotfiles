@@ -1,0 +1,4 @@
+# us(intl): make ' + c give ç rather than ć. GTK's built-in input method
+# ignores XCOMPOSEFILE (set in hypr/hyprland.lua for xkbcommon apps) and reads
+# this file instead; pt_BR's table is en_US's with dead_acute+c mapped to ç.
+include "/usr/share/X11/locale/pt_BR.UTF-8/Compose"
