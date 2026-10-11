@@ -12,7 +12,6 @@
       "api_url": "http://localhost:8083"
     }
   },
-  "buffer_font_family": "FiraCode Nerd Font Mono",
   "cli_default_open_behavior": "existing_window",
   "agent": {
     "tool_permissions": {
@@ -55,13 +54,22 @@
     },
   },
   "base_keymap": "VSCode",
-  "icon_theme": "Catppuccin Frappé",
+  "multi_cursor_modifier": "cmd_or_ctrl",
+  "terminal": {
+    "font_family": "FiraCode Nerd Font Mono"
+  },
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
   "ui_font_size": 16,
-  "buffer_font_size": 15,
+  "buffer_font_size": 16,
+  "buffer_font_family": "CaskaydiaCove Nerd Font",
   "theme": {
-    "mode": "dark",
-    "light": "One Light",
-    "dark": "Catppuccin Frappé",
+    "mode": "system",
+    "light": "Solarized Light",
+    "dark": "Catppuccin Mocha"
   },
   "edit_predictions": {
     "mode": "subtle",
@@ -73,4 +81,37 @@
       "max_output_tokens": 512,
     },
   },
+  "languages": {
+    "Nix": {
+      "language_servers": ["nixd", "!nil"]
+    },
+    "QML": {
+      "formatter": {
+        "external": {
+          "command": "sh",
+          "arguments": [
+            "-c",
+            "tmp=$(mktemp --suffix .qml); cat > $tmp; qmlformat $tmp"
+          ]
+        }
+      }
+    }
+  },
+  "lsp": {
+    "nixd": {
+      "settings": {
+        "nixpkgs": {
+          "expr": "import (builtins.getFlake (builtins.toString ./.)).inputs.nixpkgs {}"
+        },
+        "formatting": {
+          "command": ["alejandra"]
+        }
+      }
+    },
+    "qml": {
+      "binary": {
+        "arguments": ["-E"]
+      }
+    }
+  }
 }

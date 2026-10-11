@@ -17,6 +17,18 @@ install-all: install-dotfiles install-my-zsh install-cli-tools install-dev-tools
 install-dotfiles: install-stow
   @echo "Linking dotfiles into \$HOME"
   cd {{justfile_directory()}} && stow .
+  just --justfile {{justfile()}} link-zed
+
+# Links ~/.config/zed to the repo as a whole directory (see .stow-local-ignore)
+link-zed:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  target="$HOME/.config/zed"
+  if [ -d "$target" ] && [ ! -L "$target" ]; then
+    echo "$target is a real directory: move it aside, then rerun" >&2
+    exit 1
+  fi
+  ln -sfn {{justfile_directory()}}/zed "$target"
 
 # Installs GNU stow
 install-stow:

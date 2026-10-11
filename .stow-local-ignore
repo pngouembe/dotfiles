@@ -37,6 +37,11 @@
 # (the thumbnailer sandbox can't see $HOME).
 ^/thumbnailers
 
+# Zed saves by writing a temp file and renaming it over the target, which
+# replaces a per-file symlink with a real file. `just link-zed` links the whole
+# directory instead (stow can't, because of --no-folding), so saves land in the repo.
+^/zed
+
 # Editor leftovers
 .+\.swp$
 .+\.bak$
