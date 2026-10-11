@@ -549,26 +549,26 @@ hl.bind(mainMod .. " + G", focus_or_launch("^steam$", "steam"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 
--- SHELL SWITCH (screenshots). Caelestia's built-in capture; annotation is
--- handled by swappy, which caelestia-cli depends on, rather than by satty.
--- `screenshotFreeze` freezes the screen before letting you draw the region,
--- matching the freeze_screen = true that Noctalia was configured with.
---
--- Caelestia has no equivalent of Noctalia's "fullscreen pick" (pick a monitor),
--- so SUPER+ALT+P is left on `caelestia record -r` -- region screen recording --
--- which is the nearest useful thing Caelestia offers on a spare bind. Drop the
--- line if you would rather keep the chord free.
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.global("caelestia:screenshotFreeze"))
-hl.bind(mainMod .. " + CTRL + P",  hl.dsp.global("caelestia:screenshot"))
+-- Screenshots go straight to the clipboard via hyprshot (pacman -S hyprshot;
+-- grim, slurp, wl-clipboard and hyprpicker for --freeze do the actual work).
+-- Shell-independent, so these survive a caelestia/noctalia switch. Nothing is
+-- written to disk; SHIFT + Print opens the shot in satty to annotate, then
+-- save or copy from there.
+local shot = "hyprshot --freeze --clipboard-only -m "
+hl.bind("Print",                   hl.dsp.exec_cmd(shot .. "region"))
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(shot .. "region"))
+hl.bind(mainMod .. " + CTRL + P",  hl.dsp.exec_cmd(shot .. "window"))
+hl.bind("CTRL + Print",            hl.dsp.exec_cmd(shot .. "output -m active"))
+hl.bind("SHIFT + Print",           hl.dsp.exec_cmd("hyprshot --freeze --raw -m region | satty -f - --copy-command wl-copy --early-exit"))
+
+-- Region screen recording (caelestia only).
 hl.bind(mainMod .. " + ALT + P",   hl.dsp.exec_cmd("caelestia record -r"))
 -- hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
 -- hl.bind(mainMod .. " + CTRL + P",  hl.dsp.exec_cmd("noctalia msg screenshot-fullscreen"))
 -- hl.bind(mainMod .. " + ALT + P",   hl.dsp.exec_cmd("noctalia msg screenshot-fullscreen pick"))
 
--- Grab the whole screen without a picker, and record with/without sound
--- (caelestia only). Print is the conventional home for the first; the record
--- chords sit beside the region recorder bound above.
-hl.bind("Print",                 hl.dsp.exec_cmd("caelestia screenshot"), locked)
+-- Record with/without sound (caelestia only), beside the region recorder
+-- bound above.
 hl.bind("CTRL + ALT + R",        hl.dsp.exec_cmd("caelestia record"))
 hl.bind(mainMod .. " + ALT + R", hl.dsp.exec_cmd("caelestia record -s"))
 
