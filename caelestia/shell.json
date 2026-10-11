@@ -36,7 +36,8 @@
         }
     },
     "services": {
-        "useFahrenheit": false,
-        "useTwelveHourClock": false
+        "weatherUnits": "Celsius",
+        "sensorUnits": "Celsius",
+        "clockFormat": "TwentyFourHour"
     }
 }
