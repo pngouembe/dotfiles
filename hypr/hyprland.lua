@@ -84,6 +84,17 @@ hl.on("hyprland.start", function()
     -- when falling back, comment this line out rather than running two agents.
     hl.exec_cmd("systemctl --user start hyprpolkitagent.service")
 
+    -- Bluetooth pairing agent. Caelestia's Bluetooth panel can start a pairing
+    -- but registers no agent to answer it, so any device that asks for
+    -- confirmation (new Xbox controllers do) is refused with "No agent
+    -- available". blueman-applet is the agent and pops the confirm dialog.
+    -- Its tray icon comes from the StatusNotifierItem plugin, which is
+    -- switched off here so it does not double Caelestia's (StatusIcon is a
+    -- core plugin and cannot be). The setting lives in dconf, hence set on
+    -- every start. Installed with `pacman -S blueman`; services.blueman on
+    -- NixOS.
+    hl.exec_cmd([[command -v blueman-applet >/dev/null 2>&1 && gsettings set org.blueman.general plugin-list "['!StatusNotifierItem']" && exec blueman-applet]])
+
     hl.exec_cmd("syncthing --no-browser")
 
     -- Clipboard history, feeding the SUPER + V picker below (from caelestia).

@@ -43,6 +43,9 @@
         };
       };
 
+      # Pairing agent; blueman-applet is started from hypr/hyprland.lua.
+      services.blueman.enable = true;
+
       boot.extraModprobeConfig = ''
         options bluetooth disable_ertm=1
       '';

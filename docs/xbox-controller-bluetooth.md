@@ -111,6 +111,24 @@ reboots.
 
 A helper script lives at `~/.cache/claude/repair-xbox.sh`.
 
+## Pairing a new controller: needs an agent
+
+A controller that has never been bonded asks for pairing confirmation. If no agent is registered,
+`bluetoothd` refuses it and the controller never pairs:
+
+```
+bluetoothd: src/device.c:new_auth() No agent available for request type 2
+bluetoothd: device_confirm_passkey: Operation not permitted
+```
+
+Caelestia's Bluetooth panel can start a pairing but registers no agent. `blueman-applet`, started
+from `hypr/hyprland.lua`, is the agent and shows the confirm dialog. Its own tray icon is off
+(`plugin-list ['!StatusNotifierItem']`). Already-bonded controllers reconnect without an agent,
+which is why the first controller kept working.
+
+Also, do not leave `scan on` running while you `pair`: the LE connection then tends to time out
+(`Failed to pair: org.bluez.Error.AuthenticationCanceled`). Scan, stop, then pair.
+
 ## Standing configuration (did NOT fix the loop)
 
 Applied while chasing the fault. Be clear-eyed: **these did not stop the reconnect loop** — the
