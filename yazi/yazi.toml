@@ -1,0 +1,11 @@
+# Only the overrides; everything else comes from yazi's built-in defaults.
+
+[plugin]
+# Sony ARW is a TIFF container, so `file` calls it image/tiff and the built-in
+# image previewer shows a broken or tiny thumbnail. Match on the extension instead.
+prepend_preloaders = [
+	{ url = "*.{arw,ARW}", run = "raw" },
+]
+prepend_previewers = [
+	{ url = "*.{arw,ARW}", run = "raw" },
+]
