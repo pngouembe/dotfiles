@@ -26,12 +26,31 @@
 ---- MONITORS ----
 ------------------
 
+-- DisplayPort is the main screen: it sits at 0x0 at 2560x1440@165Hz and
+-- holds workspace 1. HDMI, when plugged in, extends to its right.
+hl.monitor({
+    output   = "DP-1",
+    mode     = "2560x1440@165",
+    position = "0x0",
+    scale    = "auto",
+})
+
+hl.monitor({
+    output   = "HDMI-A-1",
+    mode     = "preferred",
+    position = "auto-right",
+    scale    = "auto",
+})
+
+-- Anything else that gets plugged in.
 hl.monitor({
     output   = "",
     mode     = "preferred",
     position = "auto",
     scale    = "auto",
 })
+
+hl.workspace_rule({ workspace = "1", monitor = "DP-1", default = true })
 
 
 ---------------------
