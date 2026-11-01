@@ -1,0 +1,9 @@
+#:schema https://docs.jj-vcs.dev/latest/config-schema.json
+
+[user]
+name = "Paul Ngouembe"
+email = "paul.ngouembe@gmail.com"
+
+[ui]
+# Bare `jj` prints the log straight to the terminal instead of opening the pager
+default-command = ["log", "--no-pager"]
