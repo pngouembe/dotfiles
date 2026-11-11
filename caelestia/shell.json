@@ -15,13 +15,7 @@
         },
         "idle": {
             "lockBeforeSleep": false,
-            "timeouts": [
-                {
-                    "timeout": 900,
-                    "idleAction": "dpms off",
-                    "returnAction": "dpms on"
-                }
-            ]
+            "timeouts": []
         }
     },
     "launcher": {
