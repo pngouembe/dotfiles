@@ -138,12 +138,11 @@ hl.on("hyprland.start", function()
     -- This replaces variety, which rotated wallpapers but also downloaded new
     -- ones unprompted. Caelestia has no rotation setting of its own -- the
     -- shell only exposes Wallpapers.setRandom() behind the launcher -- so the
-    -- timer lives in a small script instead. 1800s matches the interval variety
-    -- was set to.
+    -- timer lives in a small script instead. Every 2h: 30 min felt too busy.
     --
     -- `hyprland.start` fires once per session, so `hyprctl reload` will not
     -- stack a second rotator; the script takes a lock as well.
-    hl.exec_cmd(os.getenv("HOME") .. "/dotfiles/scripts/caelestia-wallpaper-rotate.sh 1800")
+    hl.exec_cmd(os.getenv("HOME") .. "/dotfiles/scripts/caelestia-wallpaper-rotate.sh 7200")
 end)
 
 

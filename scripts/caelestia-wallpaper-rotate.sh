@@ -5,9 +5,8 @@
 # `caelestia wallpaper -r` picks a random image out of caelestia's wallpaper
 # directory (~/Pictures/Wallpapers unless CAELESTIA_WALLPAPERS_DIR or
 # paths.wallpaperDir says otherwise), skips whichever one is already set, and --
-# because the active scheme is `dynamic` -- re-derives the whole palette from
-# it, picking light/dark and the Material variant to match. Nothing is ever
-# fetched from the network: that is the entire point, and why variety is gone.
+# because the active scheme is `dynamic` -- re-derives the palette from it.
+# Nothing is ever fetched from the network: that is the entire point, and why variety is gone.
 #
 # This has to run under Hyprland rather than as a systemd user timer. The CLI
 # filters candidates by monitor size, and reads the monitor list over the
@@ -25,15 +24,18 @@
 
 set -uo pipefail
 
-readonly interval="${1:-1800}"
+readonly interval="${1:-7200}"
 readonly dir="${2:-}"
 readonly lock="${XDG_RUNTIME_DIR:-/tmp}/caelestia-wallpaper-rotate.lock"
 
+# -N (--no-smart) keeps the scheme's dark/light mode as set: without it a
+# bright image flips the whole desktop to light mode.
+#
 # Bare `-r` falls back to caelestia's own wallpaper directory.
 if [ -n "$dir" ]; then
-    readonly -a random_arg=(-r "$dir")
+    readonly -a random_arg=(-N -r "$dir")
 else
-    readonly -a random_arg=(-r)
+    readonly -a random_arg=(-N -r)
 fi
 
 # One rotator per session at most. `hyprland.start` already fires only once,
